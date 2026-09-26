@@ -50,6 +50,7 @@ NIM_MODEL=openai/gpt-oss-20b
 Then render it into every project and start everything:
 
 ```
+powershell -File audit/apply-runtime-fixes.ps1
 powershell -File audit/apply-secrets.ps1
 powershell -File audit/start-all.ps1
 powershell -File audit/health.ps1
@@ -124,6 +125,7 @@ No single iteration is the winner. The strongest path is to assemble one:
 | `installs.json` + `health.json` | Dependency install results and the last health probe |
 | `secrets.env.example` | Template for your NVIDIA key / Atlas URI / model |
 | `apply-secrets.ps1` + `templates.txt` | Render secrets into all 11 project env files |
+| `apply-runtime-fixes.ps1` | Reapply verified dependency and auth compatibility fixes after extraction |
 | `start-all.ps1` / `stop-all.ps1` / `health.ps1` | Start, stop and probe the 15 app processes |
 | `mongo.js` | Local MongoDB stand-in with persistent storage |
 | `probe-mastra.mjs` | NIM connectivity probe (how the 410 was found) |
@@ -137,6 +139,8 @@ No single iteration is the winner. The strongest path is to assemble one:
   string like `nvidia/openai/gpt-oss-20b` and no code change at all.
 - Five projects needed real code to reach NIM: new adapters in `agency-again`, `claude-main`
   and `agency-os-v1`, plus patches to `codex-agency-2` and `paulweezy`.
+- `apply-runtime-fixes.ps1` also pins `@composio/core` to `0.19.0` for
+  `@composio/mastra` compatibility and keeps Better Auth on the Codex app's same origin.
 - `digital-agency-new-from-server` scores 86 but needs Postgres + Redis via Docker, which is
   not installed here. It is the highest-scoring project that has not actually been run.
 - `agency-os-v1` and `dev-knowlege` have an empty `pnpm-workspace.yaml`, so pnpm fails with
