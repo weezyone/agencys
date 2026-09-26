@@ -1,0 +1,107 @@
+[
+    {
+        "app":  "agency-os-newerest",
+        "url":  "http://localhost:3101",
+        "status":  200,
+        "ok":  true,
+        "body":  "\u003c!DOCTYPE html\u003e\u003chtml lang=\"en\"\u003e\u003chead\u003e\u003cmeta charSet=\"utf-8\"/\u003e\u003cmeta name=\"viewport\" content=\"width=device-width, initial-s"
+    },
+    {
+        "app":  "agency-os-v1",
+        "url":  "http://localhost:3102",
+        "status":  200,
+        "ok":  true,
+        "body":  "\u003c!DOCTYPE html\u003e\u003chtml lang=\"en\"\u003e\u003chead\u003e\u003cmeta charSet=\"utf-8\"/\u003e\u003cmeta name=\"viewport\" content=\"width=device-width, initial-s"
+    },
+    {
+        "app":  "fabel",
+        "url":  "http://localhost:3103",
+        "status":  200,
+        "ok":  true,
+        "body":  "\u003c!DOCTYPE html\u003e\u003chtml lang=\"en\"\u003e\u003chead\u003e\u003cmeta charSet=\"utf-8\"/\u003e\u003cmeta name=\"viewport\" content=\"width=device-width, initial-s"
+    },
+    {
+        "app":  "ai-agency-api",
+        "url":  "http://localhost:3104/health",
+        "status":  200,
+        "ok":  true,
+        "body":  "{\"ok\":true,\"modelProvider\":\"router\",\"model\":\"nvidia/openai/gpt-oss-20b\"}"
+    },
+    {
+        "app":  "ai-agency-web",
+        "url":  "http://localhost:5104",
+        "status":  200,
+        "ok":  true,
+        "body":  "\u003c!doctype html\u003e \u003chtml lang=\"en\"\u003e \u003chead\u003e \u003cscript type=\"module\"\u003eimport { injectIntoGlobalHook } from \"/@react-refresh\"; in"
+    },
+    {
+        "app":  "paulweezy-api",
+        "url":  "http://localhost:3105/api/agents",
+        "status":  200,
+        "ok":  true,
+        "body":  "{\"agents\":[{\"_id\":\"6ab72ae6f34a53173343b099\",\"type\":\"project-manager\",\"name\":\"Project Manager Agent\",\"description\":\"Help"
+    },
+    {
+        "app":  "paulweezy-web",
+        "url":  "http://localhost:5105",
+        "status":  200,
+        "ok":  true,
+        "body":  "\u003c!doctype html\u003e \u003chtml lang=\"en\"\u003e \u003chead\u003e \u003cscript type=\"module\"\u003eimport { injectIntoGlobalHook } from \"/@react-refresh\"; in"
+    },
+    {
+        "app":  "mastra-design-agent",
+        "url":  "http://localhost:3106",
+        "status":  200,
+        "ok":  true,
+        "body":  "\u003c!DOCTYPE html\u003e\u003chtml lang=\"en\"\u003e\u003chead\u003e\u003cmeta charSet=\"utf-8\"/\u003e\u003cmeta name=\"viewport\" content=\"width=device-width, initial-s"
+    },
+    {
+        "app":  "agency-pm-studio",
+        "url":  "http://localhost:4107/api/agents",
+        "status":  200,
+        "ok":  true,
+        "body":  "{\"atlas-pm\":{\"id\":\"atlas-pm\",\"name\":\"Atlas (Project Manager)\",\"description\":\"\",\"instructions\":\"You are Atlas, the projec"
+    },
+    {
+        "app":  "claude-api",
+        "url":  "http://localhost:4108/api/agents",
+        "status":  200,
+        "ok":  true,
+        "body":  "{\"agents\":[{\"type\":\"project_manager\",\"label\":\"Project Manager\",\"description\":\"Clarifies client goals, breaks work into m"
+    },
+    {
+        "app":  "claude-web",
+        "url":  "http://localhost:5108",
+        "status":  200,
+        "ok":  true,
+        "body":  "\u003c!doctype html\u003e \u003chtml lang=\"en\"\u003e \u003chead\u003e \u003cscript type=\"module\"\u003eimport { injectIntoGlobalHook } from \"/@react-refresh\"; in"
+    },
+    {
+        "app":  "agency-again-api",
+        "url":  "http://localhost:4109/api/health",
+        "status":  200,
+        "ok":  true,
+        "body":  "{\"ok\":true}"
+    },
+    {
+        "app":  "agency-again-web",
+        "url":  "http://localhost:5109",
+        "status":  200,
+        "ok":  true,
+        "body":  "\u003c!doctype html\u003e \u003chtml lang=\"en\"\u003e \u003chead\u003e \u003cscript type=\"module\"\u003eimport { injectIntoGlobalHook } from \"/@react-refresh\"; in"
+    },
+    {
+        "app":  "codex-agency-2-rt",
+        "url":  "http://localhost:4110/health",
+        "status":  200,
+        "ok":  true,
+        "body":  "{\"ok\":true,\"workflows\":[\"leadQualificationWorkflow\",\"proposalGenerationWorkflow\",\"clientOnboardingWorkflow\",\"deliveryOrc"
+    },
+    {
+        "app":  "codex-agency-2-web",
+        "url":  "http://localhost:3110",
+        "status":  200,
+        "ok":  true,
+        "body":  "\u003c!DOCTYPE html\u003e\u003chtml lang=\"en\"\u003e\u003chead\u003e\u003cmeta charSet=\"utf-8\"/\u003e\u003cmeta name=\"viewport\" content=\"width=device-width, initial-s"
+    }
+]

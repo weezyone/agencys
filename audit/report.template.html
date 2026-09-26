@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AgencyOS — Archive Audit</title>
+<style>
+  :root {
+    --bg: #0b0d12;
+    --panel: #12151d;
+    --panel-2: #171b25;
+    --line: #232838;
+    --txt: #e6e9f0;
+    --dim: #8b93a7;
+    --accent: #7c5cff;
+    --keep: #3fbf7f;
+    --salvage: #e5a13a;
+    --discard: #e0556b;
+    --run: #3fbf7f;
+    --stop: #5a6172;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--txt);
+    font: 14px/1.55 ui-sans-serif, -apple-system, "Segoe UI", system-ui, sans-serif;
+  }
+  h1, .title, .stat .n, details.setup summary {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  }
+  a { color: #9b86ff; }
+  .wrap { max-width: 1400px; margin: 0 auto; padding: 28px 22px 90px; }
+  header h1 { margin: 0 0 4px; font-size: 26px; letter-spacing: -.02em; }
+  header .sub { color: var(--dim); margin-bottom: 20px; }
+
+  .alerts { display: grid; gap: 10px; margin-bottom: 22px; }
+  .alert {
+    border: 1px solid var(--line); background: var(--panel);
+    border-radius: 8px; padding: 12px 14px;
+  }
+  .alert.crit { border-color: #e0556b44; background: #e0556b0d; }
+  .alert.warn { border-color: #e5a13a44; background: #e5a13a0d; }
+  .alert.info { border-color: #7c5cff44; background: #7c5cff0d; }
+  .alert.crit b { color: var(--discard); }
+  .alert.warn b { color: var(--salvage); }
+  .alert.info b { color: #9b86ff; }
+  .alert b { display: block; margin-bottom: 3px; }
+  .alert p { margin: 0; color: var(--dim); }
+  code { background: #0006; border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; font-size: 12.5px; color: #c9b8ff; }
+
+  .stats { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+  .stat { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 16px; min-width: 110px; }
+  .stat .n { font-size: 22px; font-weight: 600; }
+  .stat .l { color: var(--dim); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+
+  .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 18px; }
+  .chip {
+    background: var(--panel); border: 1px solid var(--line); color: var(--dim);
+    padding: 6px 12px; border-radius: 999px; cursor: pointer; font-size: 13px;
+  }
+  .chip:hover { color: var(--txt); }
+  .chip.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+  input[type=search], select {
+    background: var(--panel); border: 1px solid var(--line); color: var(--txt);
+    padding: 7px 11px; border-radius: 7px; font: inherit;
+  }
+  input[type=search] { min-width: 240px; }
+  .spacer { flex: 1; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 14px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .card > .head { padding: 14px 16px; cursor: pointer; }
+  .card > .head:hover { background: var(--panel-2); }
+  .row1 { display: flex; align-items: flex-start; gap: 10px; }
+  .title { font-weight: 600; font-size: 15px; flex: 1; }
+  .badge { font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid; white-space: nowrap; }
+  .b-KEEP { color: var(--keep); border-color: #3fbf7f55; background: #3fbf7f18; }
+  .b-SALVAGE { color: var(--salvage); border-color: #e5a13a55; background: #e5a13a18; }
+  .b-DISCARD { color: var(--discard); border-color: #e0556b55; background: #e0556b18; }
+  .purpose { color: var(--dim); margin: 7px 0 10px; font-size: 13px; }
+  .meter { height: 6px; background: #0007; border-radius: 4px; overflow: hidden; }
+  .meter i { display: block; height: 100%; border-radius: 4px; }
+  .metarow { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-size: 12px; color: var(--dim); }
+  .metarow .meter { flex: 1; }
+  .pill { font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--stop); }
+  .pill.live { color: var(--run); border-color: #3fbf7f55; background: #3fbf7f14; }
+  .pill.live::before { content: "\25CF "; }
+  .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+  .tag { font-size: 11px; color: var(--dim); background: var(--panel-2); border: 1px solid var(--line); border-radius: 5px; padding: 1px 7px; }
+
+  .body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--line); }
+  .card.open .body { display: block; }
+  .body h4 { margin: 14px 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .07em; color: var(--dim); }
+  .body ul { margin: 0; padding-left: 18px; }
+  .body li { margin-bottom: 3px; }
+  .why { background: var(--panel-2); border: 1px solid var(--line); padding: 9px 12px; border-radius: 6px; }
+  .warn { background: #e0556b12; border: 1px solid #e0556b3a; color: #f0a2ae; padding: 9px 12px; border-radius: 6px; }
+  .kv { display: grid; grid-template-columns: 76px 1fr; gap: 3px 10px; font-size: 12.5px; }
+  .kv b { color: var(--dim); font-weight: 500; }
+  .mono { font-family: ui-monospace, Consolas, monospace; font-size: 12px; color: #a9b4cc; word-break: break-all; }
+
+  details.setup { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-top: 26px; }
+  details.setup summary { cursor: pointer; font-weight: 600; }
+  pre { background: #05070b; border: 1px solid var(--line); border-radius: 7px; padding: 12px; overflow: auto; font-size: 12.5px; }
+  .empty { color: var(--dim); padding: 40px; text-align: center; }
+  footer { color: var(--dim); font-size: 12px; margin-top: 30px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>AgencyOS — Archive Audit</h1>
+    <div class="sub">Paul Weezy Design &middot; 26 project iterations reviewed, wired to NVIDIA NIM + MongoDB, and run where possible.</div>
+  </header>
+
+  <div class="alerts">
+    <div class="alert crit">
+      <b>&#9888; <code>openai/gpt-oss-120b</code> is retired on NVIDIA NIM</b>
+      <p>The endpoint returns <b>HTTP 410 Gone</b> — "reached its end of life on 2026-09-03". Every project here defaults to the live
+         <code>openai/gpt-oss-20b</code> instead. For a 120B-class model use <code>nvidia/nemotron-3-super-120b-a12b</code>.
+         Change <code>NIM_MODEL</code> in <code>_infra/secrets.env</code> and re-run <code>apply-secrets.ps1</code> — one line, everywhere.</p>
+    </div>
+    <div class="alert warn">
+      <b>&#9888; Live-looking credentials found in two archives — rotate them</b>
+      <p><code>mastra-design-agent-main/.env.example</code> (OpenRouter key + Penpot token) and
+         <code>workspace-codex-long-horizon-tasks-master/agency-os/.env</code> (Telegram bot token, Linear API key, Mongo URI).
+         Nothing was committed to git, but treat all four as compromised.</p>
+    </div>
+    <div class="alert info">
+      <b>&#9432; Your Atlas cluster no longer exists</b>
+      <p><code>cluster0.wtadcgr.mongodb.net</code> fails SRV lookup (NXDOMAIN). A local MongoDB stands in on
+         <code>127.0.0.1:27017</code>. Paste a real Atlas URI into <code>secrets.env</code> and every app picks it up.</p>
+    </div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="toolbar">
+    <span class="chip on" data-f="verdict" data-v="*">All</span>
+    <span class="chip" data-f="verdict" data-v="KEEP">Keep</span>
+    <span class="chip" data-f="verdict" data-v="SALVAGE">Salvage</span>
+    <span class="chip" data-f="verdict" data-v="DISCARD">Discard</span>
+    <span class="chip" data-f="run" data-v="live">&#9679; Running</span>
+    <span class="spacer"></span>
+    <input type="search" id="q" placeholder="Search name, stack, feature&hellip;" />
+    <select id="sort">
+      <option value="maturity">Sort: maturity</option>
+      <option value="loc">Sort: lines of code</option>
+      <option value="title">Sort: name</option>
+    </select>
+    <span class="chip" id="expand">Expand all</span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <details class="setup">
+    <summary>How to plug in your own keys</summary>
+    <p>All 26 projects read from one file. Edit <code>C:\Users\weezy\agencyos-audit\_infra\secrets.env</code>:</p>
+<pre>NVIDIA_API_KEY=nvapi-...your key...
+MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net
+NIM_MODEL=openai/gpt-oss-20b</pre>
+    <p>Then render it into every project and restart:</p>
+<pre>powershell -File _infra\apply-secrets.ps1
+powershell -File _infra\stop-all.ps1
+powershell -File _infra\start-all.ps1
+powershell -File _infra\health.ps1</pre>
+    <p><code>apply-secrets.ps1</code> expands <code>{{NVIDIA_API_KEY}}</code>, <code>{{NIM_MODEL}}</code> and
+       <code>{{MONGO:dbName}}</code> inside each project's <code>.env.audit-template</code>. Leave <code>MONGODB_URI</code>
+       blank to keep using the local Mongo.</p>
+  </details>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const DATA = /*__DATA__*/null;
+const P = DATA.projects, H = DATA.health || [];
+
+const liveUrls = new Set(H.filter(h => h.ok).map(h => h.url));
+const liveByHost = new Set(H.filter(h => h.ok).map(h => { try { return new URL(h.url).port; } catch(e){ return ''; } }));
+
+function isLive(p) {
+  if (!p.run || !p.run.url) return false;
+  if (liveUrls.has(p.run.url)) return true;
+  try { return liveByHost.has(new URL(p.run.url).port); } catch (e) { return false; }
+}
+P.forEach(p => p._live = isLive(p));
+
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const mcol = m => m >= 75 ? 'var(--keep)' : m >= 45 ? 'var(--salvage)' : 'var(--discard)';
+
+document.getElementById('stats').innerHTML = [
+  ['Projects', P.length, ''],
+  ['Keep', P.filter(p=>p.verdict==='KEEP').length, 'var(--keep)'],
+  ['Salvage', P.filter(p=>p.verdict==='SALVAGE').length, 'var(--salvage)'],
+  ['Discard', P.filter(p=>p.verdict==='DISCARD').length, 'var(--discard)'],
+  ['Running now', P.filter(p=>p._live).length, 'var(--run)'],
+  ['Total LOC', P.reduce((a,p)=>a+(p.loc||0),0).toLocaleString(), '']
+].map(([l,n,c]) => '<div class="stat"><div class="n"' + (c?' style="color:'+c+'"':'') + '>'+n+'</div><div class="l">'+l+'</div></div>').join('');
+
+let fVerdict = '*', fRun = false, open = new Set();
+
+function card(p) {
+  const det = [];
+  if (p.keep && p.keep.length) det.push('<h4>Worth keeping</h4><ul>' + p.keep.map(k=>'<li>'+esc(k)+'</li>').join('') + '</ul>');
+  if (p.why) det.push('<h4>Verdict</h4><div class="' + (p.verdict==='DISCARD'?'warn':'why') + '">'+esc(p.why)+'</div>');
+  if (p.warning) det.push('<h4>Warning</h4><div class="warn">'+esc(p.warning)+'</div>');
+
+  const kv = [];
+  if (p.llm) kv.push(['LLM', esc(p.llm.nim||'') + (p.llm.env?' &middot; <span class="mono">'+esc(p.llm.env)+'</span>':'') + (p.llm.files&&p.llm.files.length?'<br><span class="mono">'+p.llm.files.map(esc).join('<br>')+'</span>':'')]);
+  if (p.db) kv.push(['Database', (p.db.env?'<span class="mono">'+esc(p.db.env)+'</span>':'&mdash;') + (p.db.files&&p.db.files.length?'<br><span class="mono">'+p.db.files.map(esc).join('<br>')+'</span>':'')]);
+  if (p.run && p.run.cmd) kv.push(['Run', '<span class="mono">'+esc(p.run.cmd)+'</span>']);
+  kv.push(['Size', (p.loc||0).toLocaleString() + ' LOC &middot; ' + (p.files_n||0) + ' files']);
+  kv.push(['Folder', '<span class="mono">'+esc(p.id)+'</span>']);
+  det.push('<h4>Wiring</h4><div class="kv">' + kv.map(([k,v])=>'<b>'+k+'</b><div>'+v+'</div>').join('') + '</div>');
+
+  return '<div class="card' + (open.has(p.id)?' open':'') + '" data-id="'+esc(p.id)+'">'
+    + '<div class="head">'
+    +   '<div class="row1"><div class="title">'+esc(p.title)+'</div>'
+    +   '<span class="badge b-'+p.verdict+'">'+p.verdict+'</span></div>'
+    +   '<div class="purpose">'+esc(p.purpose)+'</div>'
+    +   '<div class="metarow"><span>'+p.maturity+'</span>'
+    +     '<span class="meter"><i style="width:'+p.maturity+'%;background:'+mcol(p.maturity)+'"></i></span>'
+    +     (p._live && p.run.url
+          ? '<a class="pill live" href="'+esc(p.run.url)+'" target="_blank" rel="noreferrer" onclick="event.stopPropagation()">'+esc(p.run.url.replace(/^https?:\/\//,''))+'</a>'
+          : '<span class="pill">'+esc((p.run&&p.run.status)||'not run')+'</span>')
+    +   '</div>'
+    +   '<div class="tags">' + (p.stack||[]).map(s=>'<span class="tag">'+esc(s)+'</span>').join('') + '<span class="tag">'+esc(p.tier)+'</span></div>'
+    + '</div>'
+    + '<div class="body">' + det.join('') + '</div>'
+  + '</div>';
+}
+
+function render() {
+  const q = document.getElementById('q').value.toLowerCase().trim();
+  const sort = document.getElementById('sort').value;
+  let list = P.filter(p => {
+    if (fVerdict !== '*' && p.verdict !== fVerdict) return false;
+    if (fRun && !p._live) return false;
+    if (!q) return true;
+    return JSON.stringify(p).toLowerCase().includes(q);
+  });
+  list.sort((a,b) => sort === 'title' ? a.title.localeCompare(b.title) : (b[sort]||0) - (a[sort]||0));
+  document.getElementById('grid').innerHTML = list.length
+    ? list.map(card).join('')
+    : '<div class="empty">No projects match.</div>';
+  document.getElementById('foot').textContent =
+    'Showing ' + list.length + ' of ' + P.length + ' \u00b7 generated ' + new Date(DATA.generated).toLocaleString();
+}
+
+document.getElementById('grid').addEventListener('click', e => {
+  const c = e.target.closest('.card'); if (!c || e.target.closest('a')) return;
+  const id = c.dataset.id;
+  if (open.has(id)) { open.delete(id); c.classList.remove('open'); }
+  else { open.add(id); c.classList.add('open'); }
+});
+document.querySelectorAll('.chip[data-f]').forEach(ch => ch.addEventListener('click', () => {
+  if (ch.dataset.f === 'run') { fRun = !fRun; ch.classList.toggle('on', fRun); }
+  else {
+    fVerdict = ch.dataset.v;
+    document.querySelectorAll('.chip[data-f=verdict]').forEach(o => o.classList.toggle('on', o === ch));
+  }
+  render();
+}));
+document.getElementById('expand').addEventListener('click', function () {
+  if (open.size) { open.clear(); this.textContent = 'Expand all'; }
+  else { P.forEach(p => open.add(p.id)); this.textContent = 'Collapse all'; }
+  render();
+});
+document.getElementById('q').addEventListener('input', render);
+document.getElementById('sort').addEventListener('change', render);
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+# Tooling caches
+.impeccable/
+
+# Real secrets - use audit/secrets.env.example as the template
+audit/secrets.env
+
+# Extraction target and runtime artifacts
+node_modules/
+audit/data/
+audit/*.log
