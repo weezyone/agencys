@@ -159,7 +159,8 @@
 MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net
 NIM_MODEL=openai/gpt-oss-20b</pre>
     <p>Then render it into every project and restart:</p>
-<pre>powershell -File _infra\apply-secrets.ps1
+<pre>powershell -File _infra\apply-runtime-fixes.ps1
+powershell -File _infra\apply-secrets.ps1
 powershell -File _infra\stop-all.ps1
 powershell -File _infra\start-all.ps1
 powershell -File _infra\health.ps1</pre>

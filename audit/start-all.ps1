@@ -4,10 +4,14 @@
 $ErrorActionPreference = 'Continue'
 $root = 'C:\Users\weezy\agencyos-audit'
 
-# 1. Re-render every .env from _infra\secrets.env
+# 1. Apply dependency/runtime compatibility fixes after a fresh extraction.
+powershell -File "$root\_infra\apply-runtime-fixes.ps1"
+if ($LASTEXITCODE -ne 0) { throw 'Runtime compatibility fixes failed.' }
+
+# 2. Re-render every .env from _infra\secrets.env
 powershell -File "$root\_infra\apply-secrets.ps1" | Out-Null
 
-# 2. Local MongoDB (skipped when secrets.env supplies a real Atlas MONGODB_URI)
+# 3. Local MongoDB (skipped when secrets.env supplies a real Atlas MONGODB_URI)
 $useAtlas = (Get-Content "$root\_infra\secrets.env" | Where-Object { $_ -match '^MONGODB_URI=\S' }).Count -gt 0
 if (-not $useAtlas) {
   $mongoUp = (Test-NetConnection 127.0.0.1 -Port 27017 -InformationLevel Quiet -WarningAction SilentlyContinue)
