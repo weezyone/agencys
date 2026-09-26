@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AgencyOS — Archive Audit</title>
+<style>
+  :root {
+    --bg: #0b0d12;
+    --panel: #12151d;
+    --panel-2: #171b25;
+    --line: #232838;
+    --txt: #e6e9f0;
+    --dim: #8b93a7;
+    --accent: #7c5cff;
+    --keep: #3fbf7f;
+    --salvage: #e5a13a;
+    --discard: #e0556b;
+    --run: #3fbf7f;
+    --stop: #5a6172;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--txt);
+    font: 14px/1.55 ui-sans-serif, -apple-system, "Segoe UI", system-ui, sans-serif;
+  }
+  h1, .title, .stat .n, details.setup summary {
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  }
+  a { color: #9b86ff; }
+  .wrap { max-width: 1400px; margin: 0 auto; padding: 28px 22px 90px; }
+  header h1 { margin: 0 0 4px; font-size: 26px; letter-spacing: -.02em; }
+  header .sub { color: var(--dim); margin-bottom: 20px; }
+
+  .alerts { display: grid; gap: 10px; margin-bottom: 22px; }
+  .alert {
+    border: 1px solid var(--line); background: var(--panel);
+    border-radius: 8px; padding: 12px 14px;
+  }
+  .alert.crit { border-color: #e0556b44; background: #e0556b0d; }
+  .alert.warn { border-color: #e5a13a44; background: #e5a13a0d; }
+  .alert.info { border-color: #7c5cff44; background: #7c5cff0d; }
+  .alert.crit b { color: var(--discard); }
+  .alert.warn b { color: var(--salvage); }
+  .alert.info b { color: #9b86ff; }
+  .alert b { display: block; margin-bottom: 3px; }
+  .alert p { margin: 0; color: var(--dim); }
+  code { background: #0006; border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; font-size: 12.5px; color: #c9b8ff; }
+
+  .stats { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+  .stat { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 16px; min-width: 110px; }
+  .stat .n { font-size: 22px; font-weight: 600; }
+  .stat .l { color: var(--dim); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+
+  .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 18px; }
+  .chip {
+    background: var(--panel); border: 1px solid var(--line); color: var(--dim);
+    padding: 6px 12px; border-radius: 999px; cursor: pointer; font-size: 13px;
+  }
+  .chip:hover { color: var(--txt); }
+  .chip.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+  input[type=search], select {
+    background: var(--panel); border: 1px solid var(--line); color: var(--txt);
+    padding: 7px 11px; border-radius: 7px; font: inherit;
+  }
+  input[type=search] { min-width: 240px; }
+  .spacer { flex: 1; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 14px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .card > .head { padding: 14px 16px; cursor: pointer; }
+  .card > .head:hover { background: var(--panel-2); }
+  .row1 { display: flex; align-items: flex-start; gap: 10px; }
+  .title { font-weight: 600; font-size: 15px; flex: 1; }
+  .badge { font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid; white-space: nowrap; }
+  .b-KEEP { color: var(--keep); border-color: #3fbf7f55; background: #3fbf7f18; }
+  .b-SALVAGE { color: var(--salvage); border-color: #e5a13a55; background: #e5a13a18; }
+  .b-DISCARD { color: var(--discard); border-color: #e0556b55; background: #e0556b18; }
+  .purpose { color: var(--dim); margin: 7px 0 10px; font-size: 13px; }
+  .meter { height: 6px; background: #0007; border-radius: 4px; overflow: hidden; }
+  .meter i { display: block; height: 100%; border-radius: 4px; }
+  .metarow { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-size: 12px; color: var(--dim); }
+  .metarow .meter { flex: 1; }
+  .pill { font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--stop); }
+  .pill.live { color: var(--run); border-color: #3fbf7f55; background: #3fbf7f14; }
+  .pill.live::before { content: "\25CF "; }
+  .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+  .tag { font-size: 11px; color: var(--dim); background: var(--panel-2); border: 1px solid var(--line); border-radius: 5px; padding: 1px 7px; }
+
+  .body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--line); }
+  .card.open .body { display: block; }
+  .body h4 { margin: 14px 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .07em; color: var(--dim); }
+  .body ul { margin: 0; padding-left: 18px; }
+  .body li { margin-bottom: 3px; }
+  .why { background: var(--panel-2); border: 1px solid var(--line); padding: 9px 12px; border-radius: 6px; }
+  .warn { background: #e0556b12; border: 1px solid #e0556b3a; color: #f0a2ae; padding: 9px 12px; border-radius: 6px; }
+  .kv { display: grid; grid-template-columns: 76px 1fr; gap: 3px 10px; font-size: 12.5px; }
+  .kv b { color: var(--dim); font-weight: 500; }
+  .mono { font-family: ui-monospace, Consolas, monospace; font-size: 12px; color: #a9b4cc; word-break: break-all; }
+
+  details.setup { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-top: 26px; }
+  details.setup summary { cursor: pointer; font-weight: 600; }
+  pre { background: #05070b; border: 1px solid var(--line); border-radius: 7px; padding: 12px; overflow: auto; font-size: 12.5px; }
+  .empty { color: var(--dim); padding: 40px; text-align: center; }
+  footer { color: var(--dim); font-size: 12px; margin-top: 30px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>AgencyOS — Archive Audit</h1>
+    <div class="sub">Paul Weezy Design &middot; 26 project iterations reviewed, wired to NVIDIA NIM + MongoDB, and run where possible.</div>
+  </header>
+
+  <div class="alerts">
+    <div class="alert crit">
+      <b>&#9888; <code>openai/gpt-oss-120b</code> is retired on NVIDIA NIM</b>
+      <p>The endpoint returns <b>HTTP 410 Gone</b> — "reached its end of life on 2026-09-03". Every project here defaults to the live
+         <code>openai/gpt-oss-20b</code> instead. For a 120B-class model use <code>nvidia/nemotron-3-super-120b-a12b</code>.
+         Change <code>NIM_MODEL</code> in <code>_infra/secrets.env</code> and re-run <code>apply-secrets.ps1</code> — one line, everywhere.</p>
+    </div>
+    <div class="alert warn">
+      <b>&#9888; Live-looking credentials found in two archives — rotate them</b>
+      <p><code>mastra-design-agent-main/.env.example</code> (OpenRouter key + Penpot token) and
+         <code>workspace-codex-long-horizon-tasks-master/agency-os/.env</code> (Telegram bot token, Linear API key, Mongo URI).
+         Nothing was committed to git, but treat all four as compromised.</p>
+    </div>
+    <div class="alert info">
+      <b>&#9432; Your Atlas cluster no longer exists</b>
+      <p><code>cluster0.wtadcgr.mongodb.net</code> fails SRV lookup (NXDOMAIN). A local MongoDB stands in on
+         <code>127.0.0.1:27017</code>. Paste a real Atlas URI into <code>secrets.env</code> and every app picks it up.</p>
+    </div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="toolbar">
+    <span class="chip on" data-f="verdict" data-v="*">All</span>
+    <span class="chip" data-f="verdict" data-v="KEEP">Keep</span>
+    <span class="chip" data-f="verdict" data-v="SALVAGE">Salvage</span>
+    <span class="chip" data-f="verdict" data-v="DISCARD">Discard</span>
+    <span class="chip" data-f="run" data-v="live">&#9679; Running</span>
+    <span class="spacer"></span>
+    <input type="search" id="q" placeholder="Search name, stack, feature&hellip;" />
+    <select id="sort">
+      <option value="maturity">Sort: maturity</option>
+      <option value="loc">Sort: lines of code</option>
+      <option value="title">Sort: name</option>
+    </select>
+    <span class="chip" id="expand">Expand all</span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <details class="setup">
+    <summary>How to plug in your own keys</summary>
+    <p>All 26 projects read from one file. Edit <code>C:\Users\weezy\agencyos-audit\_infra\secrets.env</code>:</p>
+<pre>NVIDIA_API_KEY=nvapi-...your key...
+MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net
+NIM_MODEL=openai/gpt-oss-20b</pre>
+    <p>Then render it into every project and restart:</p>
+<pre>powershell -File _infra\apply-secrets.ps1
+powershell -File _infra\stop-all.ps1
+powershell -File _infra\start-all.ps1
+powershell -File _infra\health.ps1</pre>
+    <p><code>apply-secrets.ps1</code> expands <code>{{NVIDIA_API_KEY}}</code>, <code>{{NIM_MODEL}}</code> and
+       <code>{{MONGO:dbName}}</code> inside each project's <code>.env.audit-template</code>. Leave <code>MONGODB_URI</code>
+       blank to keep using the local Mongo.</p>
+  </details>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const DATA = {"projects":[{"id":"agency-pm_1-main","title":"agency-pm (Atlas PM)","purpose":"Delegation-only AI project manager for agency delivery: task graphs, tracker sync, specialist hiring.","stack":["Mastra","TypeScript","MongoDB + Atlas Vector Search","Linear/GitHub/monday","Exa"],"maturity":88,"verdict":"KEEP","tier":"core","run":{"status":"running","url":"http://localhost:4107","cmd":"npx mastra dev"},"llm":{"files":["src/mastra/agents/project-manager.ts","src/mastra/tools/create-specialist.ts"],"env":"PM_MODEL / SPECIALIST_MODEL","nim":"configured: nvidia/<model>"},"db":{"files":["src/adapters/task-repo.ts","src/mastra/memory.ts"],"env":"MONGODB_URI"},"keep":["Dependency-validated task graph + lifecycle","Deterministic specialist assignment + dynamic hiring","Mongo canonical board + append-only event journal","Linear/GitHub/monday push sync","55 tests, strict typecheck","Declarative HTTP-tool security model"],"why":"Best-engineered module in the entire pile: real domain logic, real tests, real persistence. The PM brain of AgencyOS.","loc":7110,"files_n":323},{"id":"digital-agency-new-from-server-main","title":"digital-agency (cloud-first platform)","purpose":"Cloud-first AI dev platform: teams, projects, workflows, billing, templates, sandbox coding.","stack":["React Router 7","React 19","Vercel AI SDK","Prisma + PostgreSQL","Redis","Playwright"],"maturity":86,"verdict":"KEEP","tier":"core","run":{"status":"not-started","url":"","cmd":"npm install; npm run services:up; npm run db:push; npm run dev (5173)"},"llm":{"files":["app/lib/ai.server.ts","app/lib/ai-providers.ts"],"env":"OPENAI_API_KEY / provider baseURL","nim":"supported - add NIM as OpenAI-compatible provider"},"db":{"files":["app/lib/db.server.ts","prisma/schema.prisma"],"env":"DATABASE_URL (Postgres)"},"keep":["Multi-provider abstraction with fallback + encrypted key storage","SSE streaming generation API","Prisma domain model (teams/projects/billing)","Auth + session handling","Workflow engine + sandbox commands","Playwright/Vitest suites"],"why":"Most complete product platform, but it is Postgres/Redis/Docker-based - the odd one out vs the Mongo+Mastra direction. Not started here because Docker is unavailable on this machine.","loc":41988,"files_n":422},{"id":"ai-agency-mastra-updated--2-newest-main","title":"ai-agency-mastra (workflows + RAG)","purpose":"Multi-agent agency platform: Mastra workflows, Mongo persistence, RAG, workspaces, React dashboard.","stack":["Mastra","Express","React/Vite","MongoDB + vector store","Zod structured output"],"maturity":84,"verdict":"KEEP","tier":"core","run":{"status":"running","url":"http://localhost:5104","cmd":"npx tsx src/server/index.ts (3104) + vite (5104)"},"llm":{"files":["src/lib/env.ts","src/mastra/agents/index.ts"],"env":"AGENCY_MODEL / AGENCY_MODEL_PROVIDER","nim":"configured: AGENCY_MODEL=nvidia/<model>"},"db":{"files":["src/lib/mongoose.ts","src/mastra/storage.ts"],"env":"MONGODB_URI"},"keep":["5 real workflows: delivery, brand identity, social campaign, landing page, market research","Zod-validated structured agent output","Mongo memory/storage + vector RAG","Encryption + auth enforcement helpers","Smoke-test scripts and migration notes"],"why":"Deepest workflow library with live model + persistence wiring. /health confirmed it reports the NIM model.","loc":3421,"files_n":50},{"id":"agency-os-v1-main","title":"AgencyOS v1 (8 agents)","purpose":"AI-native agency OS: lead intake to strategy brief to proposal to project plan, with 8 specialist agents.","stack":["Next.js","Mastra","MongoDB (native driver + transactions)","Composio"],"maturity":79,"verdict":"KEEP","tier":"core","run":{"status":"running","url":"http://localhost:3102","cmd":"npx next dev -p 3102"},"llm":{"files":["src/mastra/model.ts (added)","src/mastra/agents/*.ts"],"env":"OPENAI_BASE_URL + OPENAI_MODEL","nim":"patched: added createOpenAI provider shim pointing at NIM"},"db":{"files":["src/lib/mongodb/client.ts"],"env":"MONGODB_URI"},"keep":["8 specialist agents: strategist, sales, QA, PM, ops, engineer, designer, content","lead-to-project workflow","Task execution store + background worker","Mongo transaction layer","Auth/password policy"],"why":"Strongest agent roster plus a real execution worker. Cleanest base for the agent workforce layer.","loc":6667,"files_n":122},{"id":"paulweezy-80265bf-main1","title":"PaulWeezy MVP (client-facing)","purpose":"Agency AI assistant UI: conversations with specialised agents, file uploads, dashboard.","stack":["React/Vite","Express","Mongoose","OpenAI SDK"],"maturity":78,"verdict":"KEEP","tier":"core","run":{"status":"running","url":"http://localhost:5105","cmd":"node server.js (3105) + vite (5105)"},"llm":{"files":["server/services/llmService.js"],"env":"OPENAI_BASE_URL + LLM_MODEL","nim":"patched: added baseURL + LLM_MODEL override"},"db":{"files":["server/config/database.js"],"env":"DATABASE_URL"},"keep":["Agent CRUD + seeded specialist roster (seeded and verified)","Conversation/chat API","File upload + storage service","Mongoose schemas for agents/conversations/files","The most finished client-facing UI of the whole set"],"why":"Only iteration whose end-user product feel is complete. Seeded agents returned live from /api/agents.","loc":8668,"files_n":98},{"id":"fabel-main","title":"fabel","purpose":"V1 agent-powered agency platform with typed workflows and pluggable persistence/AI providers.","stack":["Next.js 16","custom TS agent core","SQLite/file/Redis persistence"],"maturity":78,"verdict":"KEEP","tier":"core","run":{"status":"running","url":"http://localhost:3103","cmd":"npx next dev -p 3103"},"llm":{"files":["src/services/nim-ai-client.ts","src/services/ai-client-factory.ts"],"env":"NVIDIA_NIM_API_KEY / NVIDIA_NIM_MODEL / AI_PROVIDER","nim":"native - already NIM-first, only model id changed"},"db":{"files":["src/server/persistence*"],"env":"FABEL_PERSISTENCE / FABEL_SQLITE_PATH"},"keep":["First-class NVIDIA NIM client with retries","Provider factory (nim | openai | stub) - the cleanest provider seam in the pile","Typed base-agent abstraction","Stub provider for offline demos/CI","Pluggable persistence adapters","Strong test coverage"],"why":"Already built for NIM. Its ai-client-factory should become the shared provider layer for the merged AgencyOS.","loc":8881,"files_n":116},{"id":"codex-agency-2-master","title":"codex-agency-2 (monorepo)","purpose":"Greenfield AgencyOS monorepo: cockpit + client portal, Hono/Mastra runtime, Better Auth, MCP adapters.","stack":["Turbo/pnpm monorepo","Next.js","Hono","Mastra","MongoDB","Better Auth"],"maturity":78,"verdict":"KEEP","tier":"core","run":{"status":"running","url":"http://localhost:3110","cmd":"tsx runtime (4110) + next dev -p 3110"},"llm":{"files":["apps/runtime/src/runtime/mastra.ts"],"env":"OPENAI_BASE_URL + AGENCY_MODEL","nim":"patched: swapped openai() for createOpenAI({baseURL}).chat()"},"db":{"files":["packages/db/src/index.ts","apps/web/lib/auth.ts"],"env":"MONGODB_URL"},"keep":["Clean monorepo boundaries (web / runtime / agents / db packages)","Better Auth + organization plugin + workspace access control","Shared Zod schemas across apps","5 workflows: lead, proposal, onboarding, delivery, QA","MCP adapter interfaces (GitHub/Linear/Figma/Stitch)","Public site + agency dashboard + client portal split"],"why":"Best architecture/skeleton. If you want a long-term structure to merge everything into, this is the shape.","loc":3997,"files_n":89},{"id":"agency-os-newerest-main","title":"agency-os-newerest","purpose":"Hybrid agency CRM/PM with an internal AI agent workforce (Mastra-in-Next + MongoDB).","stack":["Next.js 15","Mastra","Mongoose","NextAuth"],"maturity":72,"verdict":"KEEP","tier":"core","run":{"status":"running","url":"http://localhost:3101","cmd":"npx next dev --turbopack -p 3101"},"llm":{"files":["src/mastra/agents/project-manager.ts","src/mastra/agents/teammates.ts"],"env":"MASTRA_MODEL","nim":"configured: MASTRA_MODEL=nvidia/<model> (verified reaching NIM)"},"db":{"files":["src/lib/db/mongodb.ts"],"env":"MONGODB_URI"},"keep":["Widest business domain model: lead/client/project lifecycle, change requests, deposits, UAT sign-off, budget alerts, policy gates","Design-review + Figma/Slack/Stripe/GitHub/Linear seams","Spawnable teammate agents","30 API routes","ADRs and docs"],"why":"Richest agency business logic (SOW, deposits, UAT, change requests) - the commercial layer the others lack. Integrations are still mocked.","loc":19604,"files_n":339},{"id":"mastra-design-agent-main","title":"mastra-design-agent","purpose":"Design agent producing deliverables, Google Stitch runbooks and Penpot exports, with Mongo vector memory.","stack":["Next.js 16","custom OpenAI-compatible client","MongoDB vector search","Penpot"],"maturity":72,"verdict":"KEEP","tier":"specialist","run":{"status":"running","url":"http://localhost:3106","cmd":"npx next dev -p 3106"},"llm":{"files":["src/lib/openrouter.ts"],"env":"OPENROUTER_BASE_URL + OPENROUTER_MODEL","nim":"configured: base URL repointed to NIM (no code change needed)"},"db":{"files":["src/lib/mongodb.ts"],"env":"MONGODB_URI + MONGODB_VECTOR_INDEX"},"keep":["Stitch runbook generation","Penpot export/deliverable pipeline","Mongo vector retrieval + artifact/run history","Base-URL-configurable LLM client (drop-in NIM)"],"why":"The only iteration that produces real design deliverables. Fold it in as the Designer agent's toolset.","loc":2074,"files_n":35,"warning":"Its committed .env.example contains what looks like a live OpenRouter key and Penpot token - rotate them."},{"id":"claude-main","title":"agency-agent-platform (claude)","purpose":"Multi-agent agency ops prototype with approval gates and an artifact-producing workflow runner.","stack":["Express","React/Vite","in-memory store"],"maturity":72,"verdict":"SALVAGE PARTS","tier":"salvage","run":{"status":"running","url":"http://localhost:5108","cmd":"tsx server (4108) + vite (5108)"},"llm":{"files":["server/src/core/ai-client.ts"],"env":"NVIDIA_API_KEY + NIM_MODEL","nim":"patched: added NimAiClient with mock fallback"},"db":{"files":["server/src/services/artifact-store.ts"],"env":"none - in-memory only"},"keep":["Human approval gate state machine (approve/reject per step)","Workflow runner + artifact model","7-agent roster abstraction","Full unit/component/E2E test suite","Deterministic offline fallback"],"why":"No database - state dies with the process. Keep the approval-gate design and the AiClient seam, not the storage.","loc":2975,"files_n":68},{"id":"workspace-codex-long-horizon-tasks-master","title":"workspace-codex-long-horizon (Telegram PM bot)","purpose":"Telegram-driven PM task bot with Mongo persistence and Linear/monday mirroring.","stack":["Node/TS","Telegram API","MongoDB"],"maturity":70,"verdict":"SALVAGE PARTS","tier":"salvage","run":{"status":"not-started","url":"","cmd":"npm start (Telegram polling bot - needs TELEGRAM_BOT_TOKEN)"},"llm":{"files":[],"env":"none","nim":"n/a - no LLM layer at all"},"db":{"files":["agency-os/src/app.ts"],"env":"MONGODB_URI"},"keep":["Telegram task intake + command router","Mongo task repository with in-memory fallback","Linear + monday sync with state mapping","Stand-down report generation"],"why":"No LLM layer and it is a bot, not a platform. Keep the Telegram intake channel and tracker sync as an AgencyOS integration.","loc":7050,"files_n":195,"warning":"Contains a committed .env with a live Telegram bot token, Linear API key and Mongo URI - rotate all three."},{"id":"dev-knowlege-project--long-running-main","title":"DevKnowledge Base","purpose":"Developer knowledge-management product with realtime collaboration.","stack":["React 19/Vite","WebSocket server","Drizzle + SQLite","bcrypt auth"],"maturity":68,"verdict":"SALVAGE PARTS","tier":"salvage","run":{"status":"not-started","url":"","cmd":"npm run dev (5173) - empty pnpm-workspace.yaml breaks pnpm; use npm"},"llm":{"files":[],"env":"none","nim":"n/a - no LLM"},"db":{"files":["server/db/client.ts"],"env":"DATABASE_PATH (SQLite)"},"keep":["WebSocket collaboration server","Drizzle schema + migrations","Working bcrypt auth","Export tooling and tests"],"why":"A different product (knowledge base), not an agency OS. Keep the realtime-collab server if AgencyOS ever needs live multiplayer.","loc":3340,"files_n":73},{"id":"new-weezy-trea-main","title":"new-weezy-trea (agent cockpit)","purpose":"Cockpit for AI agents: workspaces, GitHub repos, sandboxes, branches, commits, PRs.","stack":["React/Vite","Express","OpenAI SDK","Zustand/React Query"],"maturity":65,"verdict":"SALVAGE PARTS","tier":"salvage","run":{"status":"not-started","url":"","cmd":"npm run client:dev + npm run server:dev"},"llm":{"files":["api/agents/services.ts","api/sandboxes/sandbox-service.ts"],"env":"OPENAI_API_KEY / OPENAI_MODEL","nim":"easy - SDK client accepts a baseURL"},"db":{"files":[],"env":"none - file/in-memory state"},"keep":["GitHub device-flow auth","Sandbox command-execution abstraction","Branch/commit/PR workflow UI","Provider/API-key settings screens"],"why":"Lots of mocked behaviour and no durable DB, but the GitHub device-flow and sandbox abstraction are genuinely reusable.","loc":9780,"files_n":84},{"id":"digital-agency-devin-1773040832-digital-agency-setup","title":"digital-agency (devin)","purpose":"Mastra agency with project/client/task/conversation models and a RAG knowledge base.","stack":["Next 16","Mastra","Mongoose","NextAuth","Exa","Resend"],"maturity":64,"verdict":"SALVAGE PARTS","tier":"salvage","run":{"status":"not-started","url":"","cmd":"npm run dev (3000)"},"llm":{"files":["src/mastra/index.ts","src/mastra/rag/knowledge-base.ts"],"env":"OPENAI_API_KEY","nim":"easy - OpenAI-compatible base URL"},"db":{"files":["src/lib/db/mongodb.ts","src/mastra/rag/documents.ts"],"env":"MONGODB_URI"},"keep":["7-agent decomposition incl. onboarding agent","RAG document store + embeddings pipeline","Client/project/task/conversation Mongo schemas"],"why":"Its code-generation tools deliberately emit TODO handlers - the agents do not actually produce working code. Superseded by agency-os-v1.","loc":7701,"files_n":101},{"id":"agency-again-main","title":"agency-again (Maestro)","purpose":"Maestro-style orchestrator that splits a brief into projects/sprints/tasks and escalates blockers to a human PM.","stack":["Express","React/Vite","MongoDB or in-memory"],"maturity":62,"verdict":"SALVAGE PARTS","tier":"salvage","run":{"status":"running","url":"http://localhost:5109","cmd":"tsx server (4109) + vite (5109)"},"llm":{"files":["server/src/llm/nimLlm.ts (added)","server/src/llm/factory.ts"],"env":"LLM_PROVIDER=nim + NVIDIA_API_KEY + NIM_MODEL","nim":"patched: wrote a full NIM adapter (the OpenAI adapter was an unimplemented stub)"},"db":{"files":["server/src/db/store.ts"],"env":"MONGODB_URI"},"keep":["Agent message bus + lifecycle","Escalate-to-human-PM pattern","Store abstraction (Mongo or memory)","Vitest fixtures"],"why":"Shipped with a deliberately unimplemented LLM adapter, so it was a mock-only demo. The escalation/message-bus design is the reusable part.","loc":3165,"files_n":63},{"id":"mastra-ai-agency-main","title":"mastra-ai-agency","purpose":"Mastra agency with 7 agents and Mongo-backed memory.","stack":["Next 16","Mastra","OpenRouter","@mastra/mongodb"],"maturity":52,"verdict":"SALVAGE PARTS","tier":"salvage","run":{"status":"not-started","url":"","cmd":"npm run dev (3000)"},"llm":{"files":["src/mastra/index.ts","src/mastra/agents/*"],"env":"OPENROUTER_API_KEY","nim":"easy - Mastra model router string"},"db":{"files":["src/mastra/memory.ts"],"env":"MONGODB_URI + MONGODB_DB_NAME"},"keep":["Clean Mastra agent registry","Mongo memory adapter with thread titles"],"why":"Thin: agents plus memory and little product around it. Strictly a subset of agency-os-v1 and the devin iteration.","loc":537,"files_n":27},{"id":"agencyos-unified-age-main","title":"agencyos-unified (Spark)","purpose":"Visual agency-management dashboard: projects, clients, proposals, team, budgets, calendar, time tracking.","stack":["React 19/Vite","GitHub Spark","useKV persistence"],"maturity":48,"verdict":"SALVAGE PARTS","tier":"ui","run":{"status":"not-started","url":"","cmd":"npm run dev (5173)"},"llm":{"files":["src/components/agent-chat-panel.tsx"],"env":"none - window.spark.llm","nim":"needs a server proxy; Spark LLM calls cannot reach NIM directly"},"db":{"files":[],"env":"none - Spark useKV"},"keep":["Best information architecture of any iteration: budgets, calendar, timesheets, utilization, proposals","Full Radix-style UI component library","Time-entry + weekly timesheet flows"],"why":"Locked to the GitHub Spark runtime with no real backend, so it cannot be the platform. Its screens are the best UI spec you have.","loc":12048,"files_n":99},{"id":"agency-platform-claude-4.5-sonnet-main","title":"agency-platform (sonnet)","purpose":"Mastra agent library: design, frontend, backend, sales, outreach, research, QA, PM agents.","stack":["Next.js","Mastra","hard-coded OpenRouter models"],"maturity":48,"verdict":"SALVAGE PARTS","tier":"salvage","run":{"status":"not-started","url":"","cmd":"npm run dev (3000)"},"llm":{"files":["mastra/agents/*.ts"],"env":"none - model ids hard-coded","nim":"needs code edit per agent file"},"db":{"files":[],"env":"none"},"keep":["Eight well-written agent prompts / role decompositions"],"why":"Prompts only - no persistence, no API, hard-coded models. Harvest the instructions text and discard the shell.","loc":1702,"files_n":45},{"id":"v0-ai-agency-development-mastra-main","title":"v0-ai-agency (v0.app)","purpose":"Generated UI prototype for a multi-agent agency, with E2B sandbox direction.","stack":["Next 16","Mastra 0.24","AI SDK","E2B"],"maturity":45,"verdict":"SALVAGE PARTS","tier":"ui","run":{"status":"not-started","url":"","cmd":"npm run dev (3000)"},"llm":{"files":["lib/mastra/config/providers.ts"],"env":"OPENAI_API_KEY","nim":"easy - provider map already exists; default model was already gpt-oss-120b via OpenRouter"},"db":{"files":[],"env":"none"},"keep":["providers.ts provider map","Agent grid/dashboard UI","E2B code-execution direction"],"why":"v0-generated front end with no backend. Notable only because it already targeted gpt-oss-120b.","loc":7918,"files_n":101},{"id":"agency-main","title":"agency-main (AgencyOS 0.1.0)","purpose":"Minimal hybrid CRM/PM for digital agencies: multi-tenant workspaces and RBAC.","stack":["Node HTTP","Prisma","Docker"],"maturity":43,"verdict":"SALVAGE PARTS","tier":"salvage","run":{"status":"not-started","url":"","cmd":"npm start (3010)"},"llm":{"files":[],"env":"none","nim":"n/a - no AI at all"},"db":{"files":["src/db/prisma.ts"],"env":"DATABASE_URL"},"keep":["11-role RBAC model with tests","Multi-tenant workspace + row-level security design","Spec-driven docs (.specify, tech_spec.md)"],"why":"No AI layer whatsoever. The RBAC/tenancy model is the one thing every other iteration is missing - port that.","loc":899,"files_n":63},{"id":"agency-gpt-oss-ci-tests","title":"agency-gpt-oss-ci-tests","purpose":"Minimal OpenAI-compatible gpt-oss backend + CI test harness.","stack":["Node","OpenAI SDK","React RSC frontend"],"maturity":35,"verdict":"SALVAGE PARTS","tier":"salvage","run":{"status":"not-started","url":"","cmd":"npm run dev (3000)"},"llm":{"files":["backend/src/openaiClient.js"],"env":"OPENAI_BASE_URL + OPENAI_API_KEY","nim":"trivial - already base-URL driven"},"db":{"files":[],"env":"none"},"keep":["Base-URL-driven OpenAI client","gpt-oss CI tests - reuse these to verify NIM connectivity"],"why":"A test harness, not a product. Its CI tests are still useful as the NIM smoke test for the merged app.","loc":872,"files_n":30},{"id":"paulweezydesign-agency-github-main","title":"paulweezydesign-agency","purpose":"Minimal AgencyOS dashboard: projects, clients, tasks.","stack":["React 19/Vite","Lucide"],"maturity":28,"verdict":"SALVAGE PARTS","tier":"ui","run":{"status":"not-started","url":"","cmd":"npm run dev (5173)"},"llm":{"files":[],"env":"none","nim":"n/a"},"db":{"files":[],"env":"none"},"keep":["Dashboard shell, navigation and visual system"],"why":"Front-end shell with no backend, no persistence, no AI. Reports were still marked 'planned'.","loc":3300,"files_n":29},{"id":"agency-os-part-dux-main","title":"agency-os-part-dux","purpose":"AI Studio-generated agency CRM/dashboard prototype.","stack":["Vite/React","Gemini API key in vite config"],"maturity":27,"verdict":"SALVAGE PARTS","tier":"ui","run":{"status":"not-started","url":"","cmd":"npm run dev (5173)"},"llm":{"files":["vite.config.ts"],"env":"GEMINI_API_KEY","nim":"would need a rewrite (Gemini SDK, key exposed client-side)"},"db":{"files":[],"env":"none"},"keep":["Sidebar / ActivitySidebar components","Client notes + activity UI"],"why":"14 files total, no backend, and it leaks the model key to the browser. Keep two components at most.","loc":440,"files_n":14},{"id":"long-horizon-tasks-repo-main","title":"long-horizon-tasks-repo","purpose":"Long-horizon task planning spec + skeleton.","stack":["Markdown specs","tiny vitest skeleton"],"maturity":20,"verdict":"DISCARD","tier":"discard","run":{"status":"n/a","url":"","cmd":"-"},"llm":{"files":[],"env":"none","nim":"n/a"},"db":{"files":[],"env":"none"},"keep":["SPEC/PLANS/IMPLEMENT docs only"],"why":"54 lines of code across 4 files. It is documentation, not an implementation.","loc":54,"files_n":19},{"id":"digital-agency-codex-newest-master","title":"digital-agency-codex-newest","purpose":"Intended Next.js AI agency dashboard - documented heavily, implemented thinly.","stack":["Next 15","React 19"],"maturity":18,"verdict":"DISCARD","tier":"discard","run":{"status":"broken","url":"","cmd":"npm run dev - deps missing for documented features"},"llm":{"files":[],"env":"none","nim":"n/a - no AI deps installed"},"db":{"files":[],"env":"none"},"keep":["Docs/runbooks only"],"why":"README promises Mastra + MongoDB + Auth.js but package.json has only next/react - the dependencies were never added. It also ships a node_modules_broken_* folder and npm error logs. Broken by construction.","loc":27533,"files_n":657},{"id":"codex-long-horizon-template-main","title":"codex-long-horizon-template","purpose":"Cloneable Codex long-horizon repo skeleton.","stack":["Markdown + shell scripts"],"maturity":3,"verdict":"DISCARD","tier":"discard","run":{"status":"n/a","url":"","cmd":"-"},"llm":{"files":[],"env":"none","nim":"n/a"},"db":{"files":[],"env":"none"},"keep":["AGENTS.md process template only"],"why":"Zero lines of application code - every section is a TODO placeholder. It is a process template, not an AgencyOS iteration.","loc":0,"files_n":24}],"health":[{"app":"agency-os-newerest","url":"http://localhost:3101","status":200,"ok":true,"body":"<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-s"},{"app":"agency-os-v1","url":"http://localhost:3102","status":200,"ok":true,"body":"<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-s"},{"app":"fabel","url":"http://localhost:3103","status":200,"ok":true,"body":"<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-s"},{"app":"ai-agency-api","url":"http://localhost:3104/health","status":200,"ok":true,"body":"{\"ok\":true,\"modelProvider\":\"router\",\"model\":\"nvidia/openai/gpt-oss-20b\"}"},{"app":"ai-agency-web","url":"http://localhost:5104","status":200,"ok":true,"body":"<!doctype html> <html lang=\"en\"> <head> <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\"; in"},{"app":"paulweezy-api","url":"http://localhost:3105/api/agents","status":200,"ok":true,"body":"{\"agents\":[{\"_id\":\"6ab72ae6f34a53173343b099\",\"type\":\"project-manager\",\"name\":\"Project Manager Agent\",\"description\":\"Help"},{"app":"paulweezy-web","url":"http://localhost:5105","status":200,"ok":true,"body":"<!doctype html> <html lang=\"en\"> <head> <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\"; in"},{"app":"mastra-design-agent","url":"http://localhost:3106","status":200,"ok":true,"body":"<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-s"},{"app":"agency-pm-studio","url":"http://localhost:4107/api/agents","status":200,"ok":true,"body":"{\"atlas-pm\":{\"id\":\"atlas-pm\",\"name\":\"Atlas (Project Manager)\",\"description\":\"\",\"instructions\":\"You are Atlas, the projec"},{"app":"claude-api","url":"http://localhost:4108/api/agents","status":200,"ok":true,"body":"{\"agents\":[{\"type\":\"project_manager\",\"label\":\"Project Manager\",\"description\":\"Clarifies client goals, breaks work into m"},{"app":"claude-web","url":"http://localhost:5108","status":200,"ok":true,"body":"<!doctype html> <html lang=\"en\"> <head> <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\"; in"},{"app":"agency-again-api","url":"http://localhost:4109/api/health","status":200,"ok":true,"body":"{\"ok\":true}"},{"app":"agency-again-web","url":"http://localhost:5109","status":200,"ok":true,"body":"<!doctype html> <html lang=\"en\"> <head> <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\"; in"},{"app":"codex-agency-2-rt","url":"http://localhost:4110/health","status":200,"ok":true,"body":"{\"ok\":true,\"workflows\":[\"leadQualificationWorkflow\",\"proposalGenerationWorkflow\",\"clientOnboardingWorkflow\",\"deliveryOrc"},{"app":"codex-agency-2-web","url":"http://localhost:3110","status":200,"ok":true,"body":"<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-s"}],"generated":"2026-09-26T03:40:21.156Z"};
+const P = DATA.projects, H = DATA.health || [];
+
+const liveUrls = new Set(H.filter(h => h.ok).map(h => h.url));
+const liveByHost = new Set(H.filter(h => h.ok).map(h => { try { return new URL(h.url).port; } catch(e){ return ''; } }));
+
+function isLive(p) {
+  if (!p.run || !p.run.url) return false;
+  if (liveUrls.has(p.run.url)) return true;
+  try { return liveByHost.has(new URL(p.run.url).port); } catch (e) { return false; }
+}
+P.forEach(p => p._live = isLive(p));
+
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const mcol = m => m >= 75 ? 'var(--keep)' : m >= 45 ? 'var(--salvage)' : 'var(--discard)';
+
+document.getElementById('stats').innerHTML = [
+  ['Projects', P.length, ''],
+  ['Keep', P.filter(p=>p.verdict==='KEEP').length, 'var(--keep)'],
+  ['Salvage', P.filter(p=>p.verdict==='SALVAGE').length, 'var(--salvage)'],
+  ['Discard', P.filter(p=>p.verdict==='DISCARD').length, 'var(--discard)'],
+  ['Running now', P.filter(p=>p._live).length, 'var(--run)'],
+  ['Total LOC', P.reduce((a,p)=>a+(p.loc||0),0).toLocaleString(), '']
+].map(([l,n,c]) => '<div class="stat"><div class="n"' + (c?' style="color:'+c+'"':'') + '>'+n+'</div><div class="l">'+l+'</div></div>').join('');
+
+let fVerdict = '*', fRun = false, open = new Set();
+
+function card(p) {
+  const det = [];
+  if (p.keep && p.keep.length) det.push('<h4>Worth keeping</h4><ul>' + p.keep.map(k=>'<li>'+esc(k)+'</li>').join('') + '</ul>');
+  if (p.why) det.push('<h4>Verdict</h4><div class="' + (p.verdict==='DISCARD'?'warn':'why') + '">'+esc(p.why)+'</div>');
+  if (p.warning) det.push('<h4>Warning</h4><div class="warn">'+esc(p.warning)+'</div>');
+
+  const kv = [];
+  if (p.llm) kv.push(['LLM', esc(p.llm.nim||'') + (p.llm.env?' &middot; <span class="mono">'+esc(p.llm.env)+'</span>':'') + (p.llm.files&&p.llm.files.length?'<br><span class="mono">'+p.llm.files.map(esc).join('<br>')+'</span>':'')]);
+  if (p.db) kv.push(['Database', (p.db.env?'<span class="mono">'+esc(p.db.env)+'</span>':'&mdash;') + (p.db.files&&p.db.files.length?'<br><span class="mono">'+p.db.files.map(esc).join('<br>')+'</span>':'')]);
+  if (p.run && p.run.cmd) kv.push(['Run', '<span class="mono">'+esc(p.run.cmd)+'</span>']);
+  kv.push(['Size', (p.loc||0).toLocaleString() + ' LOC &middot; ' + (p.files_n||0) + ' files']);
+  kv.push(['Folder', '<span class="mono">'+esc(p.id)+'</span>']);
+  det.push('<h4>Wiring</h4><div class="kv">' + kv.map(([k,v])=>'<b>'+k+'</b><div>'+v+'</div>').join('') + '</div>');
+
+  return '<div class="card' + (open.has(p.id)?' open':'') + '" data-id="'+esc(p.id)+'">'
+    + '<div class="head">'
+    +   '<div class="row1"><div class="title">'+esc(p.title)+'</div>'
+    +   '<span class="badge b-'+p.verdict+'">'+p.verdict+'</span></div>'
+    +   '<div class="purpose">'+esc(p.purpose)+'</div>'
+    +   '<div class="metarow"><span>'+p.maturity+'</span>'
+    +     '<span class="meter"><i style="width:'+p.maturity+'%;background:'+mcol(p.maturity)+'"></i></span>'
+    +     (p._live && p.run.url
+          ? '<a class="pill live" href="'+esc(p.run.url)+'" target="_blank" rel="noreferrer" onclick="event.stopPropagation()">'+esc(p.run.url.replace(/^https?:\/\//,''))+'</a>'
+          : '<span class="pill">'+esc((p.run&&p.run.status)||'not run')+'</span>')
+    +   '</div>'
+    +   '<div class="tags">' + (p.stack||[]).map(s=>'<span class="tag">'+esc(s)+'</span>').join('') + '<span class="tag">'+esc(p.tier)+'</span></div>'
+    + '</div>'
+    + '<div class="body">' + det.join('') + '</div>'
+  + '</div>';
+}
+
+function render() {
+  const q = document.getElementById('q').value.toLowerCase().trim();
+  const sort = document.getElementById('sort').value;
+  let list = P.filter(p => {
+    if (fVerdict !== '*' && p.verdict !== fVerdict) return false;
+    if (fRun && !p._live) return false;
+    if (!q) return true;
+    return JSON.stringify(p).toLowerCase().includes(q);
+  });
+  list.sort((a,b) => sort === 'title' ? a.title.localeCompare(b.title) : (b[sort]||0) - (a[sort]||0));
+  document.getElementById('grid').innerHTML = list.length
+    ? list.map(card).join('')
+    : '<div class="empty">No projects match.</div>';
+  document.getElementById('foot').textContent =
+    'Showing ' + list.length + ' of ' + P.length + ' \u00b7 generated ' + new Date(DATA.generated).toLocaleString();
+}
+
+document.getElementById('grid').addEventListener('click', e => {
+  const c = e.target.closest('.card'); if (!c || e.target.closest('a')) return;
+  const id = c.dataset.id;
+  if (open.has(id)) { open.delete(id); c.classList.remove('open'); }
+  else { open.add(id); c.classList.add('open'); }
+});
+document.querySelectorAll('.chip[data-f]').forEach(ch => ch.addEventListener('click', () => {
+  if (ch.dataset.f === 'run') { fRun = !fRun; ch.classList.toggle('on', fRun); }
+  else {
+    fVerdict = ch.dataset.v;
+    document.querySelectorAll('.chip[data-f=verdict]').forEach(o => o.classList.toggle('on', o === ch));
+  }
+  render();
+}));
+document.getElementById('expand').addEventListener('click', function () {
+  if (open.size) { open.clear(); this.textContent = 'Expand all'; }
+  else { P.forEach(p => open.add(p.id)); this.textContent = 'Collapse all'; }
+  render();
+});
+document.getElementById('q').addEventListener('input', render);
+document.getElementById('sort').addEventListener('change', render);
+render();
+</script>
+</body>
+</html>

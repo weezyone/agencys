@@ -1,0 +1,11 @@
+C:\Users\weezy\agencyos-audit\agency-os-newerest-main\agency-os-newerest-main\.env.audit-template
+C:\Users\weezy\agencyos-audit\fabel-main\fabel-main\.env.audit-template
+C:\Users\weezy\agencyos-audit\ai-agency-mastra-updated--2-newest-main\ai-agency-mastra-updated--2-newest-main\.env.audit-template
+C:\Users\weezy\agencyos-audit\paulweezy-80265bf-main1\paulweezy-80265bf-main\server\.env.audit-template
+C:\Users\weezy\agencyos-audit\mastra-design-agent-main\mastra-design-agent-main\.env.audit-template
+C:\Users\weezy\agencyos-audit\agency-pm_1-main\agency-pm_1-main\agency-pm\.env.audit-template
+C:\Users\weezy\agencyos-audit\claude-main\claude-main\server\.env.audit-template
+C:\Users\weezy\agencyos-audit\agency-again-main\agency-again-main\server\.env.audit-template
+C:\Users\weezy\agencyos-audit\agency-os-v1-main\agency-os-v1-main\.env.audit-template
+C:\Users\weezy\agencyos-audit\codex-agency-2-master\codex-agency-2-master\apps\runtime\.env.audit-template
+C:\Users\weezy\agencyos-audit\codex-agency-2-master\codex-agency-2-master\apps\web\.env.audit-template

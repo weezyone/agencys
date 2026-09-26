@@ -1,0 +1,127 @@
+[
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\agency-os-v1-main\\agency-os-v1-main",
+        "cmd":  "npx -y pnpm@9 install --reporter=silent",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-agency-os-v1-main-.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\fabel-main\\fabel-main",
+        "cmd":  "npm install --no-audit --no-fund --loglevel=error --legacy-peer-deps",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-fabel-main-.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\ai-agency-mastra-updated--2-newest-main\\ai-agency-mastra-updated--2-newest-main",
+        "cmd":  "npm install --no-audit --no-fund --loglevel=error --legacy-peer-deps",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-ai-agency-mastra-updated--2-newest-main-.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\ai-agency-mastra-updated--2-newest-main\\ai-agency-mastra-updated--2-newest-main\\web",
+        "cmd":  "npm install --no-audit --no-fund --loglevel=error --legacy-peer-deps",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-ai-agency-mastra-updated--2-newest-main-web.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\agency-pm_1-main\\agency-pm_1-main\\agency-pm",
+        "cmd":  "npm install --no-audit --no-fund --loglevel=error --legacy-peer-deps",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-agency-pm_1-main-agency-pm.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\paulweezy-80265bf-main1\\paulweezy-80265bf-main\\server",
+        "cmd":  "npm install --no-audit --no-fund --loglevel=error --legacy-peer-deps",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-paulweezy-80265bf-main1-server.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\paulweezy-80265bf-main1\\paulweezy-80265bf-main\\client",
+        "cmd":  "npm install --no-audit --no-fund --loglevel=error --legacy-peer-deps",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-paulweezy-80265bf-main1-client.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\mastra-design-agent-main\\mastra-design-agent-main",
+        "cmd":  "npm install --no-audit --no-fund --loglevel=error --legacy-peer-deps",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-mastra-design-agent-main-.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\codex-agency-2-master\\codex-agency-2-master",
+        "cmd":  "npx -y pnpm@9 install --reporter=silent",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-codex-agency-2-master-.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\claude-main\\claude-main",
+        "cmd":  "npm install --no-audit --no-fund --loglevel=error --legacy-peer-deps",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-claude-main-.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\agency-again-main\\agency-again-main",
+        "cmd":  "npx -y pnpm@9 install --reporter=silent",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-agency-again-main-.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\digital-agency-devin-1773040832-digital-agency-setup\\digital-agency-devin-1773040832-digital-agency-setup",
+        "cmd":  "npm install --no-audit --no-fund --loglevel=error --legacy-peer-deps",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-digital-agency-devin-1773040832-digital-agency-setup-.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\mastra-ai-agency-main\\mastra-ai-agency-main",
+        "cmd":  "npm install --no-audit --no-fund --loglevel=error --legacy-peer-deps",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-mastra-ai-agency-main-.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\new-weezy-trea-main\\new-weezy-trea-main",
+        "cmd":  "npm install --no-audit --no-fund --loglevel=error --legacy-peer-deps",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-new-weezy-trea-main-.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\agency-platform-claude-4.5-sonnet-main\\agency-platform-claude-4.5-sonnet-main",
+        "cmd":  "npm install --no-audit --no-fund --loglevel=error --legacy-peer-deps",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-agency-platform-claude-4.5-sonnet-main-.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\v0-ai-agency-development-mastra-main\\v0-ai-agency-development-mastra-main",
+        "cmd":  "npm install --no-audit --no-fund --loglevel=error --legacy-peer-deps",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-v0-ai-agency-development-mastra-main-.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\agencyos-unified-age-main\\agencyos-unified-age-main",
+        "cmd":  "npm install --no-audit --no-fund --loglevel=error --legacy-peer-deps",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-agencyos-unified-age-main-.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\dev-knowlege-project--long-running-main\\dev-knowlege-project--long-running-main",
+        "cmd":  "npx -y pnpm@9 install --reporter=silent",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-dev-knowlege-project--long-running-main-.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\agency-main\\agency-main",
+        "cmd":  "npm install --no-audit --no-fund --loglevel=error --legacy-peer-deps",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-agency-main-.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\agency-gpt-oss-ci-tests\\agency-gpt-oss-ci-tests\\backend",
+        "cmd":  "npm install --no-audit --no-fund --loglevel=error --legacy-peer-deps",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-agency-gpt-oss-ci-tests-backend.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\agency-gpt-oss-ci-tests\\agency-gpt-oss-ci-tests\\frontend\\PaulWeezyDesign",
+        "cmd":  "npm install --no-audit --no-fund --loglevel=error --legacy-peer-deps",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-agency-gpt-oss-ci-tests-frontend_PaulWeezyDesign.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\agency-os-part-dux-main\\agency-os-part-dux-main",
+        "cmd":  "npm install --no-audit --no-fund --loglevel=error --legacy-peer-deps",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-agency-os-part-dux-main-.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\paulweezydesign-agency-github-main\\paulweezydesign-agency-github-main",
+        "cmd":  "npm install --no-audit --no-fund --loglevel=error --legacy-peer-deps",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-paulweezydesign-agency-github-main-.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\workspace-codex-long-horizon-tasks-master\\workspace-codex-long-horizon-tasks-master\\agency-os",
+        "cmd":  "npm install --no-audit --no-fund --loglevel=error --legacy-peer-deps",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-workspace-codex-long-horizon-tasks-master-agency-os.log"
+    },
+    {
+        "dir":  "C:\\Users\\weezy\\agencyos-audit\\digital-agency-codex-newest-master\\digital-agency-codex-newest-master",
+        "cmd":  "npm install --no-audit --no-fund --loglevel=error --legacy-peer-deps",
+        "log":  "C:\\Users\\weezy\\agencyos-audit\\_infra\\install-digital-agency-codex-newest-master-.log"
+    }
+]

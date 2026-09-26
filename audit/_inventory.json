@@ -1,0 +1,2198 @@
+[
+ {
+  "name": "agency-again-main",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\agency-again-main\\agency-again-main",
+  "files": 63,
+  "code": 45,
+  "loc": 3165,
+  "pkgs": [
+   {
+    "at": "package.json",
+    "scripts": [
+     [
+      "dev",
+      "concurrently -n server,web -c blue,magenta \"pnpm --filter @agency/server dev\" \"pnpm --filter @agency/web dev\""
+     ],
+     [
+      "build",
+      "pnpm --filter @agency/server build && pnpm --filter @agency/web build"
+     ],
+     [
+      "lint",
+      "pnpm -r lint"
+     ],
+     [
+      "test",
+      "pnpm -r test"
+     ],
+     [
+      "typecheck",
+      "pnpm -r typecheck"
+     ]
+    ],
+    "key": []
+   },
+   {
+    "at": "server\\package.json",
+    "scripts": [
+     [
+      "dev",
+      "tsx watch src/index.ts"
+     ],
+     [
+      "start",
+      "node dist/index.js"
+     ],
+     [
+      "build",
+      "tsc -p tsconfig.json"
+     ],
+     [
+      "typecheck",
+      "tsc -p tsconfig.json --noEmit"
+     ],
+     [
+      "lint",
+      "eslint \"src/**/*.ts\""
+     ],
+     [
+      "test",
+      "vitest run"
+     ]
+    ],
+    "key": [
+     "express",
+     "mongodb",
+     "@types/express",
+     "mongodb-memory-server",
+     "vitest"
+    ]
+   },
+   {
+    "at": "web\\package.json",
+    "scripts": [
+     [
+      "dev",
+      "vite"
+     ],
+     [
+      "build",
+      "tsc -b && vite build"
+     ],
+     [
+      "preview",
+      "vite preview"
+     ],
+     [
+      "typecheck",
+      "tsc -b --noEmit"
+     ],
+     [
+      "lint",
+      "eslint \"src/**/*.{ts,tsx}\""
+     ]
+    ],
+    "key": [
+     "react",
+     "@types/react",
+     "@vitejs/plugin-react",
+     "vite"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [],
+  "top": [
+   ".gitignore",
+   "AGENTS.md",
+   "README.md",
+   "package.json",
+   "pnpm-lock.yaml",
+   "pnpm-workspace.yaml",
+   "prd",
+   "server",
+   "tsconfig.base.json",
+   "web"
+  ],
+  "readme": "# agency-again  A **Multi-Agent Project Manager**. A \"Maestro\"-style orchestrator agent breaks a client brief into projects \u2192 sprints \u2192 tasks, dispatches them to worker agents, reviews the output, and escalates anything that gets stuck to a human PM \u2014 with **MongoDB** for persistence + observational memory and **Composio** for real-world integrations (Slack/Gmail/Linear).  The system runs **fully "
+ },
+ {
+  "name": "agency-gpt-oss-ci-tests",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\agency-gpt-oss-ci-tests\\agency-gpt-oss-ci-tests",
+  "files": 30,
+  "code": 16,
+  "loc": 872,
+  "pkgs": [
+   {
+    "at": "backend\\package.json",
+    "scripts": [
+     [
+      "dev",
+      "node src/server.js"
+     ],
+     [
+      "start",
+      "npm run dev"
+     ],
+     [
+      "test",
+      "jest"
+     ],
+     [
+      "test:watch",
+      "jest --watch"
+     ]
+    ],
+    "key": [
+     "@openai/agents",
+     "express",
+     "openai",
+     "@types/express"
+    ]
+   },
+   {
+    "at": "frontend\\PaulWeezyDesign\\package.json",
+    "scripts": [
+     [
+      "dev",
+      "vite"
+     ],
+     [
+      "build",
+      "vite build"
+     ],
+     [
+      "preview",
+      "vite preview"
+     ]
+    ],
+    "key": [
+     "react",
+     "@types/react",
+     "@vitejs/plugin-react",
+     "@vitejs/plugin-rsc",
+     "vite"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [],
+  "top": [
+   "backend",
+   "frontend"
+  ],
+  "readme": ""
+ },
+ {
+  "name": "agency-main",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\agency-main\\agency-main",
+  "files": 63,
+  "code": 24,
+  "loc": 899,
+  "pkgs": [
+   {
+    "at": "package.json",
+    "scripts": [
+     [
+      "build",
+      "tsc -p config/tsconfig.json"
+     ],
+     [
+      "pretest",
+      "npm run build"
+     ],
+     [
+      "test",
+      "node --test"
+     ],
+     [
+      "test:coverage",
+      "node --test --experimental-test-coverage"
+     ],
+     [
+      "start",
+      "node dist/server.js"
+     ],
+     [
+      "docker:build",
+      "docker build -t agencyos:dev ."
+     ]
+    ],
+    "key": [
+     "@prisma/client",
+     "prisma"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [
+   ".env.example"
+  ],
+  "top": [
+   ".dockerignore",
+   ".env.example",
+   ".github",
+   ".gitignore",
+   ".specify",
+   "Dockerfile",
+   "README.md",
+   "config",
+   "docker-compose.yml",
+   "docs",
+   "package-lock.json",
+   "package.json",
+   "prisma",
+   "scripts",
+   "spec.txt",
+   "src",
+   "tech_spec.md",
+   "tests"
+  ],
+  "readme": "# AgencyOS  **Version 0.1.0** - Minimal hybrid CRM & project management platform for digital agencies  ## Features  ### M1: Tenancy & RBAC \u2705 - Multi-tenant workspaces with row-level security - 11 predefined roles (Super Admin, Admin, PM, Designer, Engineer, QA, Finance, Contractor, Client Admin, Client Reviewer, Viewer) - Project-level permission overrides - SSO ready (OAuth/SAML placeholders)  ##"
+ },
+ {
+  "name": "agency-os-newerest-main",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\agency-os-newerest-main\\agency-os-newerest-main",
+  "files": 339,
+  "code": 275,
+  "loc": 19604,
+  "pkgs": [
+   {
+    "at": "package.json",
+    "scripts": [
+     [
+      "dev",
+      "next dev --turbopack"
+     ],
+     [
+      "build",
+      "next build"
+     ],
+     [
+      "start",
+      "next start"
+     ],
+     [
+      "lint",
+      "eslint . --max-warnings 0"
+     ],
+     [
+      "typecheck",
+      "tsc --noEmit"
+     ],
+     [
+      "test",
+      "vitest run"
+     ]
+    ],
+    "key": [
+     "@base-ui/react",
+     "@mastra/core",
+     "lucide-react",
+     "mongoose",
+     "next",
+     "next-auth",
+     "react",
+     "@types/react",
+     "eslint-config-next",
+     "vitest"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [
+   ".env.example"
+  ],
+  "top": [
+   ".agents",
+   ".claude",
+   ".codex",
+   ".env.example",
+   ".gitignore",
+   ".scratch",
+   "AGENTS.md",
+   "CONTEXT.md",
+   "README.md",
+   "components.json",
+   "docs",
+   "eslint.config.mjs",
+   "next.config.ts",
+   "package-lock.json",
+   "package.json",
+   "postcss.config.mjs",
+   "scripts",
+   "src",
+   "tsconfig.json",
+   "vitest.config.mts"
+  ],
+  "readme": "# AgencyOS  Hybrid agency CRM/PM with an internal AI agent workforce (Mastra-in-Next + MongoDB).  ## Setup  ```bash cp .env.example .env.local # start MongoDB locally, then: npm install npm run dev ```  Seed sign-in accounts:  - `admin@agencyos.local` / `admin-dev` - `operator@agencyos.local` / `operator-dev`  ## Scripts  - `npm run dev` \u2014 Next.js dev server - `npm run test` \u2014 Vitest unit/smoke te"
+ },
+ {
+  "name": "agency-os-part-dux-main",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\agency-os-part-dux-main\\agency-os-part-dux-main",
+  "files": 14,
+  "code": 6,
+  "loc": 440,
+  "pkgs": [
+   {
+    "at": "package.json",
+    "scripts": [
+     [
+      "dev",
+      "vite --port=3000 --host=0.0.0.0"
+     ],
+     [
+      "build",
+      "vite build"
+     ],
+     [
+      "preview",
+      "vite preview"
+     ],
+     [
+      "clean",
+      "rm -rf dist"
+     ],
+     [
+      "lint",
+      "tsc --noEmit"
+     ]
+    ],
+    "key": [
+     "@tailwindcss/vite",
+     "@vitejs/plugin-react",
+     "lucide-react",
+     "react",
+     "vite",
+     "express",
+     "vite",
+     "@types/express"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [
+   ".env.example"
+  ],
+  "top": [
+   ".env.example",
+   ".gitignore",
+   "README.md",
+   "index.html",
+   "metadata.json",
+   "package.json",
+   "src",
+   "tsconfig.json",
+   "vite.config.ts"
+  ],
+  "readme": "<div align=\"center\"> <img width=\"1200\" height=\"475\" alt=\"GHBanner\" src=\"https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6\" /> </div>  # Run and deploy your AI Studio app  This contains everything you need to run your app locally.  View your app in AI Studio: https://ai.studio/apps/718705c7-7a05-4781-9be1-c6a1b5b4aee3  ## Run Locally  **Prerequisites:**  Node.js   1. I"
+ },
+ {
+  "name": "agency-os-v1-main",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\agency-os-v1-main\\agency-os-v1-main",
+  "files": 122,
+  "code": 97,
+  "loc": 6667,
+  "pkgs": [
+   {
+    "at": "package.json",
+    "scripts": [
+     [
+      "dev",
+      "next dev"
+     ],
+     [
+      "dev:mastra",
+      "mastra dev"
+     ],
+     [
+      "build",
+      "next build"
+     ],
+     [
+      "start",
+      "next start"
+     ],
+     [
+      "test",
+      "tsx --test tests/**/*.test.ts"
+     ],
+     [
+      "typecheck",
+      "tsc --noEmit"
+     ]
+    ],
+    "key": [
+     "@ai-sdk/openai",
+     "@composio/mastra",
+     "@mastra/core",
+     "@mastra/memory",
+     "@mastra/mongodb",
+     "mongodb",
+     "next",
+     "react",
+     "@types/react",
+     "mastra"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [
+   ".env.example"
+  ],
+  "top": [
+   ".agents",
+   ".air",
+   ".claude",
+   ".codex",
+   ".env.example",
+   ".gitignore",
+   ".mastra",
+   "AGENTS.md",
+   "CLAUDE.md",
+   "README.md",
+   "next-env.d.ts",
+   "next.config.ts",
+   "package.json",
+   "pnpm-lock.yaml",
+   "pnpm-workspace.yaml",
+   "scripts",
+   "src",
+   "tests",
+   "tsconfig.json"
+  ],
+  "readme": "# AgencyOS v1  AI-native agency operating system built with **Mastra.ai + MongoDB + Composio**.  ## Product goal  AgencyOS v1 turns a new lead into a client-ready operating plan:  ```txt Lead intake \u2192 strategy brief \u2192 proposal draft \u2192 project plan \u2192 tasks/milestones \u2192 agent assignments \u2192 approved external actions ```  ## Stack  - **Mastra.ai** \u2014 agents, typed tools, workflows, runtime memory/state"
+ },
+ {
+  "name": "agency-platform-claude-4.5-sonnet-main",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\agency-platform-claude-4.5-sonnet-main\\agency-platform-claude-4.5-sonnet-main",
+  "files": 45,
+  "code": 30,
+  "loc": 1702,
+  "pkgs": [
+   {
+    "at": "package.json",
+    "scripts": [
+     [
+      "dev",
+      "next dev"
+     ],
+     [
+      "build",
+      "next build"
+     ],
+     [
+      "start",
+      "next start"
+     ],
+     [
+      "lint",
+      "eslint"
+     ]
+    ],
+    "key": [
+     "@ai-sdk/openai",
+     "@ai-sdk/openai-compatible",
+     "@mastra/core",
+     "@mastra/libsql",
+     "@mastra/loggers",
+     "@mastra/memory",
+     "mastra",
+     "next",
+     "next-themes",
+     "react",
+     "@types/react",
+     "eslint-config-next"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [],
+  "top": [
+   ".gitignore",
+   ".vscode",
+   "README.md",
+   "app",
+   "components",
+   "eslint.config.mjs",
+   "mastra",
+   "next.config.ts",
+   "package-lock.json",
+   "package.json",
+   "postcss.config.mjs",
+   "public",
+   "tsconfig.json"
+  ],
+  "readme": "This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).  ## Getting Started  First, run the development server:  ```bash npm run dev # or yarn dev # or pnpm dev # or bun dev ```  Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.  You can start editing the page by mod"
+ },
+ {
+  "name": "agency-pm_1-main",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\agency-pm_1-main\\agency-pm_1-main",
+  "files": 323,
+  "code": 47,
+  "loc": 7110,
+  "pkgs": [
+   {
+    "at": "agency-pm\\package.json",
+    "scripts": [
+     [
+      "test",
+      "vitest run"
+     ],
+     [
+      "test:watch",
+      "vitest"
+     ],
+     [
+      "typecheck",
+      "tsc --noEmit"
+     ],
+     [
+      "verify",
+      "npm run test && npm run typecheck"
+     ],
+     [
+      "dev",
+      "mastra dev"
+     ]
+    ],
+    "key": [
+     "@mastra/core",
+     "@mastra/fastembed",
+     "@mastra/memory",
+     "@mastra/mongodb",
+     "mongodb",
+     "mastra",
+     "vitest"
+    ]
+   }
+  ],
+  "py": [
+   "agency-pm\\src\\mastra\\public\\workspace\\.agents\\skills\\interactive-dashboard-builder\\requirements.txt"
+  ],
+  "env": [
+   "agency-pm\\.env.example"
+  ],
+  "top": [
+   "agency-pm"
+  ],
+  "readme": ""
+ },
+ {
+  "name": "agencyos-unified-age-main",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\agencyos-unified-age-main\\agencyos-unified-age-main",
+  "files": 99,
+  "code": 81,
+  "loc": 12048,
+  "pkgs": [
+   {
+    "at": "package.json",
+    "scripts": [
+     [
+      "dev",
+      "vite"
+     ],
+     [
+      "kill",
+      "fuser -k 5000/tcp"
+     ],
+     [
+      "build",
+      "tsc -b --noCheck && vite build"
+     ],
+     [
+      "lint",
+      "eslint ."
+     ],
+     [
+      "optimize",
+      "vite optimize"
+     ],
+     [
+      "preview",
+      "vite preview"
+     ]
+    ],
+    "key": [
+     "@heroicons/react",
+     "@phosphor-icons/react",
+     "@tailwindcss/vite",
+     "embla-carousel-react",
+     "lucide-react",
+     "next-themes",
+     "react",
+     "@types/react",
+     "@vitejs/plugin-react",
+     "@vitejs/plugin-react-swc",
+     "vite"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [],
+  "top": [
+   ".github",
+   ".gitignore",
+   ".spark-initial-sha",
+   "LICENSE",
+   "PRD.md",
+   "README.md",
+   "SECURITY.md",
+   "components.json",
+   "index.html",
+   "package-lock.json",
+   "package.json",
+   "runtime.config.json",
+   "spark.meta.json",
+   "src",
+   "tailwind.config.js",
+   "theme.json",
+   "tsconfig.json",
+   "vite.config.ts"
+  ],
+  "readme": "# \u2728 Welcome to Your Spark Template! You've just launched your brand-new Spark Template Codespace \u2014 everything\u2019s fired up and ready for you to explore, build, and create with Spark!  This template is your blank canvas. It comes with a minimal setup to help you get started quickly with Spark development.  \ud83d\ude80 What's Inside? - A clean, minimal Spark environment - Pre-configured for local development - "
+ },
+ {
+  "name": "ai-agency-mastra-updated--2-newest-main",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\ai-agency-mastra-updated--2-newest-main\\ai-agency-mastra-updated--2-newest-main",
+  "files": 50,
+  "code": 32,
+  "loc": 3421,
+  "pkgs": [
+   {
+    "at": "package.json",
+    "scripts": [
+     [
+      "dev",
+      "mastra dev"
+     ],
+     [
+      "dev:api",
+      "tsx src/server/index.ts"
+     ],
+     [
+      "dev:web",
+      "npm run dev --prefix web"
+     ],
+     [
+      "build",
+      "mastra build"
+     ],
+     [
+      "build:web",
+      "npm run build --prefix web"
+     ],
+     [
+      "start",
+      "node --import=tsx src/server/index.ts"
+     ]
+    ],
+    "key": [
+     "@ai-sdk/google-vertex",
+     "@ai-sdk/openai",
+     "@mastra/core",
+     "@mastra/loggers",
+     "@mastra/memory",
+     "@mastra/mongodb",
+     "@mastra/rag",
+     "express",
+     "mongoose",
+     "@types/express",
+     "mastra"
+    ]
+   },
+   {
+    "at": "web\\package.json",
+    "scripts": [
+     [
+      "dev",
+      "vite"
+     ],
+     [
+      "build",
+      "vite build"
+     ],
+     [
+      "preview",
+      "vite preview"
+     ]
+    ],
+    "key": [
+     "react",
+     "@types/react",
+     "@vitejs/plugin-react",
+     "vite"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [
+   ".env.example"
+  ],
+  "top": [
+   ".abacus.donotdelete",
+   ".codex",
+   ".env.example",
+   ".gitignore",
+   "MIGRATION_COMPLETE.docx",
+   "MIGRATION_COMPLETE.md",
+   "MIGRATION_COMPLETE.pdf",
+   "package-lock.json",
+   "package.json",
+   "pnpm-lock.yaml",
+   "pnpm-workspace.yaml",
+   "scripts",
+   "src",
+   "tsconfig.json",
+   "web"
+  ],
+  "readme": ""
+ },
+ {
+  "name": "claude-main",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\claude-main\\claude-main",
+  "files": 68,
+  "code": 53,
+  "loc": 2975,
+  "pkgs": [
+   {
+    "at": "package.json",
+    "scripts": [
+     [
+      "dev:server",
+      "npm run dev --prefix server"
+     ],
+     [
+      "dev:client",
+      "npm run dev --prefix client"
+     ],
+     [
+      "test",
+      "npm run test --prefix server && npm run test --prefix client"
+     ],
+     [
+      "test:e2e",
+      "npm run test:e2e --prefix client"
+     ],
+     [
+      "typecheck",
+      "npm run typecheck --prefix server && npm run typecheck --prefix client"
+     ]
+    ],
+    "key": []
+   },
+   {
+    "at": "client\\package.json",
+    "scripts": [
+     [
+      "dev",
+      "vite"
+     ],
+     [
+      "build",
+      "tsc -b && vite build"
+     ],
+     [
+      "preview",
+      "vite preview"
+     ],
+     [
+      "typecheck",
+      "tsc --noEmit"
+     ],
+     [
+      "test",
+      "vitest run"
+     ],
+     [
+      "test:watch",
+      "vitest"
+     ]
+    ],
+    "key": [
+     "react",
+     "@testing-library/react",
+     "@types/react",
+     "@vitejs/plugin-react",
+     "vite",
+     "vitest"
+    ]
+   },
+   {
+    "at": "server\\package.json",
+    "scripts": [
+     [
+      "dev",
+      "tsx watch src/index.ts"
+     ],
+     [
+      "start",
+      "tsx src/index.ts"
+     ],
+     [
+      "typecheck",
+      "tsc --noEmit"
+     ],
+     [
+      "test",
+      "vitest run"
+     ],
+     [
+      "test:watch",
+      "vitest"
+     ]
+    ],
+    "key": [
+     "express",
+     "@types/express",
+     "vitest"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [
+   "server\\.env.example"
+  ],
+  "top": [
+   ".gitignore",
+   "README.md",
+   "client",
+   "package-lock.json",
+   "package.json",
+   "server",
+   "spec.md"
+  ],
+  "readme": "# Agency Agent Platform (V1)  Multi-agent agency operations prototype: specialized AI agents collaborate on lead outreach, client intake briefs, and build plans \u2014 with human approval gates and a React UI that never sees API keys.  ## Architecture  ``` Browser (Vite/React)  \u2192  Express API (:4000)  \u2192  AgentFactory + WorkflowRunner                               \u2193                        \u2193             "
+ },
+ {
+  "name": "codex-agency-2-master",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\codex-agency-2-master\\codex-agency-2-master",
+  "files": 89,
+  "code": 57,
+  "loc": 3997,
+  "pkgs": [
+   {
+    "at": "package.json",
+    "scripts": [
+     [
+      "dev",
+      "turbo run dev --parallel"
+     ],
+     [
+      "dev:web",
+      "pnpm --filter @agency/web dev"
+     ],
+     [
+      "dev:runtime",
+      "pnpm --filter @agency/runtime dev"
+     ],
+     [
+      "build",
+      "turbo run build"
+     ],
+     [
+      "test",
+      "turbo run test"
+     ],
+     [
+      "typecheck",
+      "turbo run typecheck"
+     ]
+    ],
+    "key": [
+     "vitest"
+    ]
+   },
+   {
+    "at": "apps\\runtime\\package.json",
+    "scripts": [
+     [
+      "dev",
+      "tsx watch src/index.ts"
+     ],
+     [
+      "build",
+      "tsc -p tsconfig.json --noEmit"
+     ],
+     [
+      "start",
+      "tsx src/index.ts"
+     ],
+     [
+      "typecheck",
+      "tsc -p tsconfig.json --noEmit"
+     ],
+     [
+      "test",
+      "vitest run --passWithNoTests"
+     ]
+    ],
+    "key": [
+     "@ai-sdk/openai",
+     "@hono/node-server",
+     "@mastra/core",
+     "ai",
+     "hono",
+     "mongodb",
+     "vitest"
+    ]
+   },
+   {
+    "at": "apps\\web\\package.json",
+    "scripts": [
+     [
+      "dev",
+      "next dev"
+     ],
+     [
+      "build",
+      "next build"
+     ],
+     [
+      "start",
+      "next start"
+     ],
+     [
+      "typecheck",
+      "tsc --noEmit"
+     ],
+     [
+      "test",
+      "vitest run --passWithNoTests"
+     ]
+    ],
+    "key": [
+     "lucide-react",
+     "mongodb",
+     "next",
+     "react",
+     "@types/react",
+     "vitest"
+    ]
+   },
+   {
+    "at": "packages\\agents\\package.json",
+    "scripts": [
+     [
+      "build",
+      "tsc -p tsconfig.json --noEmit"
+     ],
+     [
+      "typecheck",
+      "tsc -p tsconfig.json --noEmit"
+     ],
+     [
+      "test",
+      "vitest run"
+     ]
+    ],
+    "key": [
+     "vitest"
+    ]
+   },
+   {
+    "at": "packages\\db\\package.json",
+    "scripts": [
+     [
+      "build",
+      "tsc -p tsconfig.json --noEmit"
+     ],
+     [
+      "typecheck",
+      "tsc -p tsconfig.json --noEmit"
+     ],
+     [
+      "test",
+      "vitest run --passWithNoTests"
+     ]
+    ],
+    "key": [
+     "mongodb",
+     "vitest"
+    ]
+   },
+   {
+    "at": "packages\\integrations\\package.json",
+    "scripts": [
+     [
+      "build",
+      "tsc -p tsconfig.json --noEmit"
+     ],
+     [
+      "typecheck",
+      "tsc -p tsconfig.json --noEmit"
+     ],
+     [
+      "test",
+      "vitest run"
+     ]
+    ],
+    "key": [
+     "vitest"
+    ]
+   },
+   {
+    "at": "packages\\schemas\\package.json",
+    "scripts": [
+     [
+      "build",
+      "tsc -p tsconfig.json --noEmit"
+     ],
+     [
+      "typecheck",
+      "tsc -p tsconfig.json --noEmit"
+     ],
+     [
+      "test",
+      "vitest run"
+     ]
+    ],
+    "key": [
+     "vitest"
+    ]
+   },
+   {
+    "at": "packages\\ui\\package.json",
+    "scripts": [
+     [
+      "build",
+      "tsc -p tsconfig.json --noEmit"
+     ],
+     [
+      "typecheck",
+      "tsc -p tsconfig.json --noEmit"
+     ],
+     [
+      "test",
+      "vitest run --passWithNoTests"
+     ]
+    ],
+    "key": [
+     "lucide-react",
+     "@types/react",
+     "vitest"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [],
+  "top": [
+   ".codex",
+   ".gitignore",
+   "README.md",
+   "apps",
+   "components.json",
+   "package.json",
+   "packages",
+   "pnpm-lock.yaml",
+   "pnpm-workspace.yaml",
+   "tsconfig.base.json",
+   "turbo.json"
+  ],
+  "readme": "# Mastra Agency OS  Greenfield monorepo scaffold for a digital design/development agency built around Mastra, Next.js, Tailwind CSS, shadcn-style UI primitives, MongoDB, Better Auth, and an adapter layer for GitHub MCP, Linear MCP, Figma MCP, Stitch MCP, and the Recraft API.  ## Workspace layout  - `apps/web`: Next.js App Router marketing site, internal agency cockpit, client portal, auth route, a"
+ },
+ {
+  "name": "codex-long-horizon-template-main",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\codex-long-horizon-template-main\\codex-long-horizon-template-main",
+  "files": 24,
+  "code": 0,
+  "loc": 0,
+  "pkgs": [],
+  "py": [],
+  "env": [
+   ".env.example"
+  ],
+  "top": [
+   ".editorconfig",
+   ".env.example",
+   ".gitattributes",
+   ".github",
+   ".gitignore",
+   "AGENTS.md",
+   "CONTRIBUTING.md",
+   "Documentation.md",
+   "Implement.md",
+   "LICENSE",
+   "Plan.md",
+   "Prompt.md",
+   "README.md",
+   "SECURITY.md",
+   "docs",
+   "scripts",
+   "tasks"
+  ],
+  "readme": "# Codex-Ready Repository Skeleton  This repository is a cloneable starting point for projects that will use Codex for long-running implementation work.  It follows the durable project memory pattern from OpenAI's Codex long-horizon task writeup:  - `Prompt.md` freezes the target: goals, non-goals, constraints, deliverables, and \"done when\". - `Plan.md` breaks the target into milestone-sized checkp"
+ },
+ {
+  "name": "dev-knowlege-project--long-running-main",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\dev-knowlege-project--long-running-main\\dev-knowlege-project--long-running-main",
+  "files": 73,
+  "code": 46,
+  "loc": 3340,
+  "pkgs": [
+   {
+    "at": "package.json",
+    "scripts": [
+     [
+      "dev",
+      "concurrently -k -n app,server -c cyan,green \"npm run dev:app\" \"npm run dev:server\""
+     ],
+     [
+      "dev:app",
+      "vite"
+     ],
+     [
+      "dev:server",
+      "tsx watch server/index.ts"
+     ],
+     [
+      "build",
+      "tsc -b && vite build"
+     ],
+     [
+      "typecheck",
+      "tsc -b --pretty false"
+     ],
+     [
+      "lint",
+      "eslint . --max-warnings=0"
+     ]
+    ],
+    "key": [
+     "@phosphor-icons/react",
+     "drizzle-orm",
+     "react",
+     "@testing-library/react",
+     "@types/react",
+     "@vitejs/plugin-react",
+     "drizzle-kit",
+     "vite",
+     "vitest"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [
+   ".env"
+  ],
+  "top": [
+   ".env",
+   ".gitignore",
+   "AGENTS.md",
+   "README.md",
+   "dev-knowlege.md",
+   "docs",
+   "drizzle.config.ts",
+   "eslint.config.js",
+   "examples",
+   "index.html",
+   "package.json",
+   "pnpm-lock.yaml",
+   "pnpm-workspace.yaml",
+   "postcss.config.js",
+   "scripts",
+   "server",
+   "src",
+   "tailwind.config.js",
+   "tsconfig.app.json",
+   "tsconfig.json",
+   "tsconfig.node.json",
+   "vite.config.ts"
+  ],
+  "readme": "# DevKnowledge Base  Developer knowledge management product (see `dev-knowlege.md`), built from a long-horizon scaffold: planning through implementation and verification.  ## Included - React + TypeScript + Vite app with **React Router** (public `/`, `/login`, `/register`; protected library/search/chat/ingest/analytics), collapsible sidebar, mobile nav, and \u2318/Ctrl+K command palette - Local Node se"
+ },
+ {
+  "name": "digital-agency-codex-newest-master",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\digital-agency-codex-newest-master\\digital-agency-codex-newest-master",
+  "files": 657,
+  "code": 298,
+  "loc": 27533,
+  "pkgs": [
+   {
+    "at": "package.json",
+    "scripts": [
+     [
+      "dev",
+      "next dev --turbopack"
+     ],
+     [
+      "build",
+      "next build"
+     ],
+     [
+      "start",
+      "next start"
+     ],
+     [
+      "lint",
+      "eslint ."
+     ],
+     [
+      "typecheck",
+      "tsc --noEmit"
+     ],
+     [
+      "test",
+      "vitest run"
+     ]
+    ],
+    "key": [
+     "next",
+     "react",
+     "@types/react",
+     "eslint-config-next"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [],
+  "top": [
+   ".github",
+   ".gitignore",
+   ".prettierrc",
+   "README.md",
+   "auth.ts",
+   "components.json",
+   "docs",
+   "eslint.config.mjs",
+   "next.config.ts",
+   "node_modules_broken_20260808162251",
+   "npm-base.log",
+   "npm-install-1.log",
+   "package.json",
+   "postcss.config.mjs",
+   "public",
+   "scripts",
+   "src",
+   "tests",
+   "tsconfig.json",
+   "vitest.config.mts",
+   "vitest.config.ts",
+   "vitest.setup.ts"
+  ],
+  "readme": "# Digital Agency  Multi-agent digital agency platform built with Next.js 15, Mastra, MongoDB, and Auth.js.  ## Stack  - Next.js 15 (App Router) + TypeScript + Tailwind v4 + shadcn/ui - Mastra agents/workflows/RAG - MongoDB via Mongoose - Auth.js v5 (RBAC: `admin` | `agent-operator` | `client`) - Vitest for unit/integration tests  ## Setup  ```bash cp .env.example .env.local npm install npm run dev"
+ },
+ {
+  "name": "digital-agency-devin-1773040832-digital-agency-setup",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\digital-agency-devin-1773040832-digital-agency-setup\\digital-agency-devin-1773040832-digital-agency-setup",
+  "files": 101,
+  "code": 85,
+  "loc": 7701,
+  "pkgs": [
+   {
+    "at": "package.json",
+    "scripts": [
+     [
+      "dev",
+      "next dev"
+     ],
+     [
+      "build",
+      "next build"
+     ],
+     [
+      "start",
+      "next start"
+     ],
+     [
+      "lint",
+      "eslint"
+     ]
+    ],
+    "key": [
+     "@ai-sdk/openai",
+     "@auth/mongodb-adapter",
+     "@base-ui/react",
+     "@mastra/core",
+     "@mastra/rag",
+     "ai",
+     "lucide-react",
+     "mongoose",
+     "next",
+     "next-auth",
+     "next-themes",
+     "react",
+     "@types/react",
+     "eslint-config-next"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [],
+  "top": [
+   ".agents",
+   ".gitignore",
+   "README.md",
+   "components.json",
+   "eslint.config.mjs",
+   "next.config.ts",
+   "package-lock.json",
+   "package.json",
+   "postcss.config.mjs",
+   "public",
+   "src",
+   "tsconfig.json"
+  ],
+  "readme": "This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).  ## Getting Started  First, run the development server:  ```bash npm run dev # or yarn dev # or pnpm dev # or bun dev ```  Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.  You can start editing the page by mod"
+ },
+ {
+  "name": "digital-agency-new-from-server-main",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\digital-agency-new-from-server-main\\digital-agency-new-from-server-main",
+  "files": 422,
+  "code": 388,
+  "loc": 41988,
+  "pkgs": [
+   {
+    "at": "package.json",
+    "scripts": [
+     [
+      "dev",
+      "react-router dev"
+     ],
+     [
+      "build",
+      "react-router build"
+     ],
+     [
+      "start",
+      "react-router-serve ./build/server/index.js"
+     ],
+     [
+      "services:up",
+      "docker compose up -d --wait postgres redis"
+     ],
+     [
+      "services:down",
+      "docker compose down"
+     ],
+     [
+      "services:logs",
+      "docker compose logs -f postgres redis"
+     ]
+    ],
+    "key": [
+     "@ai-sdk/anthropic",
+     "@ai-sdk/openai",
+     "@prisma/client",
+     "@tailwindcss/vite",
+     "ai",
+     "react",
+     "@testing-library/react",
+     "@types/react",
+     "@vitejs/plugin-react",
+     "@vitest/coverage-v8",
+     "prisma",
+     "vite",
+     "vitest"
+    ]
+   },
+   {
+    "at": "digital-agency\\package.json",
+    "scripts": [
+     [
+      "dev",
+      "next dev"
+     ],
+     [
+      "build",
+      "next build"
+     ],
+     [
+      "start",
+      "next start"
+     ],
+     [
+      "lint",
+      "eslint"
+     ]
+    ],
+    "key": [
+     "@ai-sdk/openai",
+     "@auth/mongodb-adapter",
+     "@base-ui/react",
+     "@mastra/core",
+     "@mastra/rag",
+     "ai",
+     "lucide-react",
+     "mongodb",
+     "mongoose",
+     "next",
+     "next-auth",
+     "next-themes",
+     "react",
+     "@testing-library/react",
+     "@types/react",
+     "@vitejs/plugin-react",
+     "eslint-config-next",
+     "vitest"
+    ]
+   },
+   {
+    "at": "vendor\\vercel-workflow\\package.json",
+    "scripts": [],
+    "key": []
+   }
+  ],
+  "py": [],
+  "env": [
+   ".env.example"
+  ],
+  "top": [
+   ".env.example",
+   ".eslintrc.json",
+   ".github",
+   ".gitignore",
+   ".prettierrc",
+   ".react-router",
+   "README.md",
+   "api",
+   "app",
+   "digital-agency",
+   "docker-compose.yml",
+   "e2e",
+   "eslint.config.js",
+   "package-lock.json",
+   "package.json",
+   "playwright.config.ts",
+   "pnpm-lock.yaml",
+   "pnpm-workspace.yaml",
+   "prd.md",
+   "prisma",
+   "react-router.config.ts",
+   "skills-lock.json",
+   "src",
+   "tsconfig.json",
+   "vendor"
+  ],
+  "readme": "# Cloud-First AI Development Platform  A modern cloud-first development platform built with React 19.2, React Router v7, and Vercel infrastructure.  ## Tech Stack  - **Frontend**: React 19.2, React Router v7, Vite 6, Tailwind CSS v4 - **Backend**: Vercel Functions, Workflow Development Kit (WDK) - **AI**: Anthropic Claude, OpenAI Codex - **Sandboxes**: Vercel Sandbox (Firecracker microVMs) - **Dat"
+ },
+ {
+  "name": "fabel-main",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\fabel-main\\fabel-main",
+  "files": 116,
+  "code": 102,
+  "loc": 8881,
+  "pkgs": [
+   {
+    "at": "package.json",
+    "scripts": [
+     [
+      "dev",
+      "next dev"
+     ],
+     [
+      "build",
+      "next build"
+     ],
+     [
+      "start",
+      "next start"
+     ],
+     [
+      "test",
+      "vitest run"
+     ],
+     [
+      "test:coverage",
+      "vitest run --coverage"
+     ],
+     [
+      "test:watch",
+      "vitest"
+     ]
+    ],
+    "key": [
+     "next",
+     "react",
+     "@types/react",
+     "@vitest/coverage-v8",
+     "vitest"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [
+   ".env.example"
+  ],
+  "top": [
+   ".env.example",
+   ".github",
+   ".gitignore",
+   "AGENTS.md",
+   "README.md",
+   "app",
+   "next.config.mjs",
+   "package-lock.json",
+   "package.json",
+   "prd",
+   "proxy.ts",
+   "research",
+   "src",
+   "tsconfig.json",
+   "vitest.config.ts"
+  ],
+  "readme": "# fabel  [![CI](https://github.com/paulweezydesign/fabel/actions/workflows/ci.yml/badge.svg)](https://github.com/paulweezydesign/fabel/actions/workflows/ci.yml)  V1 Agent-Powered Agency Platform \u2014 specialized AI agents collaborating on research, strategy documents, code and client outreach, orchestrated by a lightweight workflow runner with human approval gates.  CI runs on every push and pull req"
+ },
+ {
+  "name": "long-horizon-tasks-repo-main",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\long-horizon-tasks-repo-main\\long-horizon-tasks-repo-main",
+  "files": 19,
+  "code": 4,
+  "loc": 54,
+  "pkgs": [
+   {
+    "at": "long-horizon-skeleton\\package.json",
+    "scripts": [
+     [
+      "lint",
+      "eslint src/ tests/"
+     ],
+     [
+      "typecheck",
+      "tsc -p tsconfig.check.json --noEmit"
+     ],
+     [
+      "test",
+      "vitest run"
+     ],
+     [
+      "test:watch",
+      "vitest"
+     ],
+     [
+      "build",
+      "tsc"
+     ],
+     [
+      "verify",
+      "npm run lint && npm run typecheck && npm run test && npm run build"
+     ]
+    ],
+    "key": [
+     "vitest"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [],
+  "top": [
+   ".cursor",
+   "long-horizon-skeleton",
+   "long-horizon-tasks-openai-codex.json",
+   "long-horizon-tasks-openai-codex.md"
+  ],
+  "readme": ""
+ },
+ {
+  "name": "mastra-ai-agency-main",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\mastra-ai-agency-main\\mastra-ai-agency-main",
+  "files": 27,
+  "code": 13,
+  "loc": 537,
+  "pkgs": [
+   {
+    "at": "package.json",
+    "scripts": [
+     [
+      "dev",
+      "next dev"
+     ],
+     [
+      "build",
+      "next build"
+     ],
+     [
+      "start",
+      "next start"
+     ],
+     [
+      "lint",
+      "eslint"
+     ]
+    ],
+    "key": [
+     "@mastra/core",
+     "@mastra/memory",
+     "@mastra/mongodb",
+     "@openrouter/ai-sdk-provider",
+     "mongodb",
+     "next",
+     "react",
+     "@types/react",
+     "eslint-config-next"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [],
+  "top": [
+   ".gitignore",
+   "README.md",
+   "app",
+   "eslint.config.mjs",
+   "next.config.ts",
+   "package-lock.json",
+   "package.json",
+   "postcss.config.mjs",
+   "public",
+   "src",
+   "tsconfig.json"
+  ],
+  "readme": "This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).  ## Getting Started  First, run the development server:  ```bash npm run dev # or yarn dev # or pnpm dev # or bun dev ```  Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.  You can start editing the page by mod"
+ },
+ {
+  "name": "mastra-design-agent-main",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\mastra-design-agent-main\\mastra-design-agent-main",
+  "files": 35,
+  "code": 19,
+  "loc": 2074,
+  "pkgs": [
+   {
+    "at": "package.json",
+    "scripts": [
+     [
+      "dev",
+      "next dev"
+     ],
+     [
+      "build",
+      "next build"
+     ],
+     [
+      "start",
+      "next start"
+     ],
+     [
+      "lint",
+      "eslint"
+     ]
+    ],
+    "key": [
+     "mongodb",
+     "next",
+     "react",
+     "@types/react",
+     "eslint-config-next"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [
+   ".env.example"
+  ],
+  "top": [
+   ".env.example",
+   ".gitignore",
+   "AGENTS.md",
+   "README.md",
+   "eslint.config.mjs",
+   "next.config.ts",
+   "package-lock.json",
+   "package.json",
+   "penpot-integration-demo",
+   "public",
+   "src",
+   "tsconfig.json"
+  ],
+  "readme": "# Mastra Design Agent  A modernist Mastra-style design agent built in Next.js. It uses OpenRouter for chat + embeddings, MongoDB for memory and semantic retrieval, and produces deliverables for Google Stitch (computer-use runbook) and Penpot exports.  ## Features  - OpenRouter-powered LLM and embedding pipeline - MongoDB persistence for memory, artifacts, and run history - Semantic retrieval with "
+ },
+ {
+  "name": "new-weezy-trea-main",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\new-weezy-trea-main\\new-weezy-trea-main",
+  "files": 84,
+  "code": 63,
+  "loc": 9780,
+  "pkgs": [
+   {
+    "at": "package.json",
+    "scripts": [
+     [
+      "client:dev",
+      "vite"
+     ],
+     [
+      "build",
+      "tsc -b && vite build"
+     ],
+     [
+      "lint",
+      "eslint ."
+     ],
+     [
+      "preview",
+      "vite preview"
+     ],
+     [
+      "check",
+      "tsc --noEmit"
+     ],
+     [
+      "server:dev",
+      "nodemon"
+     ]
+    ],
+    "key": [
+     "lucide-react",
+     "react",
+     "express",
+     "openai",
+     "@types/express",
+     "@types/react",
+     "@vitejs/plugin-react",
+     "vite",
+     "vite-plugin-trae-solo-badge",
+     "vite-tsconfig-paths"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [],
+  "top": [
+   ".github",
+   ".gitignore",
+   ".trae",
+   "README.md",
+   "api",
+   "data",
+   "eslint.config.js",
+   "index.html",
+   "nodemon.json",
+   "package-lock.json",
+   "package.json",
+   "pnpm-lock.yaml",
+   "pnpm-workspace.yaml",
+   "postcss.config.js",
+   "public",
+   "shared",
+   "src",
+   "tailwind.config.js",
+   "tsconfig.json",
+   "vercel.json",
+   "vite.config.ts"
+  ],
+  "readme": "# React + TypeScript + Vite  This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.  Currently, two official plugins are available:  - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-re"
+ },
+ {
+  "name": "paulweezy-80265bf-main1",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\paulweezy-80265bf-main1\\paulweezy-80265bf-main",
+  "files": 98,
+  "code": 84,
+  "loc": 8668,
+  "pkgs": [
+   {
+    "at": "package.json",
+    "scripts": [
+     [
+      "postinstall",
+      "concurrently -n \"client,server\" \"npm run client-install\" \"npm run server-install\""
+     ],
+     [
+      "test",
+      "echo \"Error: no test specified\" && exit 1"
+     ],
+     [
+      "client",
+      "cd client && npm run dev"
+     ],
+     [
+      "client-install",
+      "cd client && npm install"
+     ],
+     [
+      "server",
+      "cd server && npm run dev"
+     ],
+     [
+      "server-install",
+      "cd server && npm install"
+     ]
+    ],
+    "key": []
+   },
+   {
+    "at": "client\\package.json",
+    "scripts": [
+     [
+      "start",
+      "npm run dev"
+     ],
+     [
+      "dev",
+      "vite"
+     ],
+     [
+      "build",
+      "vite build"
+     ],
+     [
+      "lint",
+      "eslint ."
+     ],
+     [
+      "preview",
+      "vite preview"
+     ]
+    ],
+    "key": [
+     "@heroicons/react",
+     "embla-carousel-react",
+     "lucide-react",
+     "next-themes",
+     "react",
+     "@types/react",
+     "@vitejs/plugin-react",
+     "vite"
+    ]
+   },
+   {
+    "at": "server\\package.json",
+    "scripts": [
+     [
+      "start",
+      "node server.js"
+     ],
+     [
+      "dev",
+      "nodemon server.js"
+     ],
+     [
+      "seed",
+      "node scripts/seedAgents.js"
+     ],
+     [
+      "fix-schema",
+      "node scripts/fixAgentSchema.js"
+     ]
+    ],
+    "key": [
+     "connect-mongo",
+     "express",
+     "express-session",
+     "mongoose",
+     "openai"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [],
+  "top": [
+   ".gitignore",
+   "README.md",
+   "client",
+   "package.json",
+   "server"
+  ],
+  "readme": "# PaulWeezy  PaulWeezy is an innovative AI Assistant Interface designed specifically for design and development agencies. This Minimal Viable Product (MVP) connects users with AI agents specialized in various tasks such as project planning, code generation, design decisions, and more. It aims to streamline workflow and enhance productivity by providing quick, intelligent assistance for everyday ta"
+ },
+ {
+  "name": "paulweezydesign-agency-github-main",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\paulweezydesign-agency-github-main\\paulweezydesign-agency-github-main",
+  "files": 29,
+  "code": 23,
+  "loc": 3300,
+  "pkgs": [
+   {
+    "at": "package.json",
+    "scripts": [
+     [
+      "dev",
+      "vite"
+     ],
+     [
+      "build",
+      "vite build"
+     ],
+     [
+      "preview",
+      "vite preview"
+     ]
+    ],
+    "key": [
+     "react",
+     "lucide-react",
+     "@vitejs/plugin-react",
+     "vite"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [],
+  "top": [
+   ".gitignore",
+   "App.tsx",
+   "README.md",
+   "components",
+   "index.html",
+   "index.tsx",
+   "metadata.json",
+   "package.json",
+   "src",
+   "tsconfig.json",
+   "types.ts",
+   "vite.config.ts"
+  ],
+  "readme": "<div align=\"center\"> <img width=\"1200\" height=\"475\" alt=\"GHBanner\" src=\"https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6\" /> </div>  # AgencyOS \u2014 Paulweezydesign Agency  > Internal operations platform for managing projects, clients, proposals, and tasks.  ## Overview  AgencyOS is the command center for **Paulweezydesign Agency** \u2014 a full-service digital design and de"
+ },
+ {
+  "name": "v0-ai-agency-development-mastra-main",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\v0-ai-agency-development-mastra-main\\v0-ai-agency-development-mastra-main",
+  "files": 101,
+  "code": 83,
+  "loc": 7918,
+  "pkgs": [
+   {
+    "at": "package.json",
+    "scripts": [
+     [
+      "build",
+      "next build"
+     ],
+     [
+      "dev",
+      "next dev"
+     ],
+     [
+      "lint",
+      "eslint ."
+     ],
+     [
+      "start",
+      "next start"
+     ]
+    ],
+    "key": [
+     "@mastra/core",
+     "ai",
+     "embla-carousel-react",
+     "lucide-react",
+     "next",
+     "next-themes",
+     "react",
+     "@types/react"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [],
+  "top": [
+   ".gitignore",
+   "README.md",
+   "app",
+   "components",
+   "components.json",
+   "hooks",
+   "lib",
+   "next.config.mjs",
+   "package.json",
+   "postcss.config.mjs",
+   "public",
+   "styles",
+   "tsconfig.json"
+  ],
+  "readme": "# AI Agency Development  *Automatically synced with your [v0.app](https://v0.app) deployments*  [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/paulweezydesigns-projects/v0-ai-agency-development) [![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/uLh09"
+ },
+ {
+  "name": "workspace-codex-long-horizon-tasks-master",
+  "path": "C:\\Users\\weezy\\agencyos-audit\\workspace-codex-long-horizon-tasks-master\\workspace-codex-long-horizon-tasks-master",
+  "files": 195,
+  "code": 91,
+  "loc": 7050,
+  "pkgs": [
+   {
+    "at": "agency-os\\package.json",
+    "scripts": [
+     [
+      "build",
+      "tsc -p tsconfig.json --noEmit"
+     ],
+     [
+      "check",
+      "tsc -p tsconfig.json --noEmit"
+     ],
+     [
+      "demo",
+      "tsx src/demo.ts"
+     ],
+     [
+      "start",
+      "tsx src/app.ts"
+     ]
+    ],
+    "key": [
+     "mongodb"
+    ]
+   },
+   {
+    "at": "codex-long-horizon\\package.json",
+    "scripts": [
+     [
+      "backup:verify",
+      "npm run build:test-deps && node scripts/verify-backup.mjs"
+     ],
+     [
+      "build",
+      "npm run build --workspaces --if-present"
+     ],
+     [
+      "build:test-deps",
+      "npm run build -w @dev-knowledge/shared && npm run build -w @dev-knowledge/backend-core"
+     ],
+     [
+      "dev:api",
+      "npm run dev -w @dev-knowledge/api"
+     ],
+     [
+      "dev:web",
+      "npm run dev -w @dev-knowledge/web"
+     ],
+     [
+      "dev:worker",
+      "npm run dev -w @dev-knowledge/worker"
+     ]
+    ],
+    "key": [
+     "@testing-library/react",
+     "@types/react",
+     "@vitejs/plugin-react",
+     "vitest"
+    ]
+   },
+   {
+    "at": "codex-long-horizon\\apps\\api\\package.json",
+    "scripts": [
+     [
+      "build",
+      "tsc -p tsconfig.json"
+     ],
+     [
+      "dev",
+      "tsx watch src/main.ts"
+     ]
+    ],
+    "key": [
+     "@nestjs/platform-express"
+    ]
+   },
+   {
+    "at": "codex-long-horizon\\apps\\web\\package.json",
+    "scripts": [
+     [
+      "build",
+      "next build"
+     ],
+     [
+      "dev",
+      "next dev"
+     ],
+     [
+      "start",
+      "next start"
+     ],
+     [
+      "typecheck",
+      "tsc --noEmit"
+     ]
+    ],
+    "key": [
+     "next",
+     "react"
+    ]
+   },
+   {
+    "at": "codex-long-horizon\\apps\\worker\\package.json",
+    "scripts": [
+     [
+      "build",
+      "tsc -p tsconfig.json"
+     ],
+     [
+      "dev",
+      "tsx watch src/main.ts"
+     ]
+    ],
+    "key": []
+   },
+   {
+    "at": "codex-long-horizon\\packages\\backend-core\\package.json",
+    "scripts": [
+     [
+      "build",
+      "tsc -p tsconfig.json"
+     ]
+    ],
+    "key": []
+   },
+   {
+    "at": "codex-long-horizon\\packages\\shared\\package.json",
+    "scripts": [
+     [
+      "build",
+      "tsc -p tsconfig.json"
+     ]
+    ],
+    "key": []
+   },
+   {
+    "at": "webdev-knowledge-repo\\package.json",
+    "scripts": [
+     [
+      "dev",
+      "next dev"
+     ],
+     [
+      "build",
+      "next build"
+     ],
+     [
+      "start",
+      "next start"
+     ],
+     [
+      "lint",
+      "eslint"
+     ]
+    ],
+    "key": [
+     "lucide-react",
+     "next",
+     "react",
+     "@types/react",
+     "eslint-config-next"
+    ]
+   }
+  ],
+  "py": [],
+  "env": [
+   "agency-os\\.env",
+   "agency-os\\.env.example"
+  ],
+  "top": [
+   ".openclaw",
+   "AGENTS.md",
+   "HEARTBEAT.md",
+   "IDENTITY.md",
+   "PLANS.md",
+   "RUNLOG.md",
+   "SOUL.md",
+   "SPEC.md",
+   "TOOLS.md",
+   "USER.md",
+   "agency-os",
+   "codex-long-horizon",
+   "implement.md",
+   "memory",
+   "tmp_transcript_101.txt",
+   "tmp_transcript_104.txt",
+   "tmp_transcript_123.txt",
+   "tmp_transcript_125.txt",
+   "tmp_transcript_79.txt",
+   "tmp_transcript_80.txt",
+   "tmp_transcript_85.txt",
+   "tmp_transcript_87.txt",
+   "tmp_transcript_90.txt",
+   "tmp_transcript_92.txt",
+   "tmp_transcript_95.txt"
+  ],
+  "readme": ""
+ }
+]
