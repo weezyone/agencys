@@ -1,1 +1,14 @@
-{"name":"infra","private":true,"dependencies":{"mongodb-memory-server":"^10.4.3"}}
+{
+  "name": "agency-archive-audit",
+  "private": true,
+  "scripts": {
+    "test": "node --test runtime.test.js",
+    "probe": "node probe-connections.js",
+    "start": "node run-apps.js",
+    "report": "node gen-report.js"
+  },
+  "dependencies": {
+    "mongodb": "^6.21.0",
+    "mongodb-memory-server": "^10.4.3"
+  }
+}
