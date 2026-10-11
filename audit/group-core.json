@@ -1,0 +1,98 @@
+[
+  {
+    "id": "agency-pm_1-main",
+    "verdict": "salvage",
+    "why": "Assessment in progress",
+    "keep": [],
+    "connections": [],
+    "validation": [
+      {
+        "command": "existing test/typecheck/lint",
+        "result": "Failed: dependencies not installed"
+      }
+    ],
+    "launch": [],
+    "status": "in_progress",
+    "notes": []
+  },
+  {
+    "id": "agency-os-v1-main",
+    "verdict": "salvage",
+    "why": "Assessment in progress",
+    "keep": [],
+    "connections": [],
+    "validation": [
+      {
+        "command": "existing test/typecheck/lint",
+        "result": "Failed: dependencies not installed"
+      }
+    ],
+    "launch": [],
+    "status": "in_progress",
+    "notes": []
+  },
+  {
+    "id": "ai-agency-mastra-updated--2-newest-main",
+    "verdict": "salvage",
+    "why": "Assessment in progress",
+    "keep": [],
+    "connections": [],
+    "validation": [
+      {
+        "command": "existing test/typecheck/lint",
+        "result": "Failed: dependencies not installed"
+      }
+    ],
+    "launch": [],
+    "status": "in_progress",
+    "notes": []
+  },
+  {
+    "id": "fabel-main",
+    "verdict": "salvage",
+    "why": "Assessment in progress",
+    "keep": [],
+    "connections": [],
+    "validation": [
+      {
+        "command": "existing test/typecheck/lint",
+        "result": "Failed: dependencies not installed"
+      }
+    ],
+    "launch": [],
+    "status": "in_progress",
+    "notes": []
+  },
+  {
+    "id": "mastra-design-agent-main",
+    "verdict": "salvage",
+    "why": "Assessment in progress",
+    "keep": [],
+    "connections": [],
+    "validation": [
+      {
+        "command": "existing test/typecheck/lint",
+        "result": "Failed: dependencies not installed"
+      }
+    ],
+    "launch": [],
+    "status": "in_progress",
+    "notes": []
+  },
+  {
+    "id": "mastra-ai-agency-main",
+    "verdict": "salvage",
+    "why": "Assessment in progress",
+    "keep": [],
+    "connections": [],
+    "validation": [
+      {
+        "command": "existing test/typecheck/lint",
+        "result": "Failed: dependencies not installed"
+      }
+    ],
+    "launch": [],
+    "status": "in_progress",
+    "notes": []
+  }
+]

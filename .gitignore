@@ -8,3 +8,11 @@ audit/secrets.env
 node_modules/
 audit/data/
 audit/*.log
+
+# Isolated application copies and local runtime configuration
+apps/
+audit/runtime/
+.env
+.env.local
+.env.development
+.env.production
